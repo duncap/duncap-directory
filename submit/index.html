@@ -1,5 +1,30 @@
+<!DOCTYPE html>
 <html>
-<title>submit</title>
+<head>
+    <title>submit</title>
+    <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("MizI96yUmyMd_cUL1"); // Replace with your EmailJS public API key
+        })();
+
+        function sendEmail(e) {
+            e.preventDefault();
+
+            emailjs.sendForm('service_3cil1xp', 'template_38ejy8l', '#myForm')
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert('Form successfully submitted');
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('Submission failed. Please try again.');
+                });
+        }
+
+        window.onload = function() {
+            document.getElementById('myForm').addEventListener('submit', sendEmail);
+        }
+    </script>
 <style>
 @font-face {
   font-family: win95bold;
@@ -138,17 +163,19 @@ label {
   margin: 20px;
 }
 </style>
-<main>
-    <h2>submit-a-page</h2>
-    <form action="https://formspree.io/f/xwkgpzpn" method="post" enctype="multipart/form-data">
-        <label for="pageTitle"><p>page title:</p></label>
-        <input type="text" id="pageTitle" name="pageTitle" required>
+<body>
+    <main>
+        <h2>submit-a-page</h2>
+        <form id="myForm" enctype="multipart/form-data">
+            <label for="pageTitle"><p>page title:</p></label>
+            <input type="text" id="pageTitle" name="pageTitle" required>
 
-        <label for="fileUpload"><p>html file:</p></label>
-        <input type="file" id="fileUpload" name="fileUpload" accept=".html" required>
+            <label for="fileUpload"><p>html file:</p></label>
+            <input type="file" id="fileUpload" name="fileUpload" accept=".html" required>
 
-        <input type="submit" value="Submit">
-    </form>
-    <p>don't have a file and don't know how to code? (at least html) use <a href="https://duncap.github.io/webessence">web essence</a>.</p>
-</main>
+            <input type="submit" value="Submit">
+        </form>
+        <p>don't have a file and don't know how to code? (at least html) use <a href="https://duncap.github.io/webessence">web essence</a>.</p>
+    </main>
+</body>
 </html>
