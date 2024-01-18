@@ -45,6 +45,21 @@ button {
     margin-bottom: 20px;
 }
 
+input {
+    order-width: 2px;
+    border-style: outset;
+    border-color: buttonface;
+    border-right-color: #424242;
+    border-bottom-color: #424242;
+    background: silver;
+    font-family: win95;
+    color: black;
+    padding: 4px;
+    border-radius: 1px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
 nav {
     font-family: win95;
     border: solid;
@@ -124,7 +139,7 @@ label {
 }
 </style>
 <main>
-    <h2>submit-a-page (only available in .html format)</h2>
+    <h2>submit-a-page</h2>
     <form action="https://formspree.io/f/xwkgpzpn" method="post" enctype="multipart/form-data">
         <label for="pageTitle"><p>page title:</p></label>
         <input type="text" id="pageTitle" name="pageTitle" required>
@@ -134,6 +149,6 @@ label {
 
         <input type="submit" value="Submit">
     </form>
-    <p>don't have a file and know how to code? use <a href="https://duncap.github.io/webessence">web essence</a>.</p>
+    <p>don't have a file and don't know how to code? (at least html) use <a href="https://duncap.github.io/webessence">web essence</a>.</p>
 </main>
 </html>
