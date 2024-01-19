@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Web Essence</title>
+    <title>web essence</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://duncap.github.io/webessence/icon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi+Fun:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"></script>
     <style>
       @font-face {
@@ -42,7 +45,6 @@
 
       #canvas {
         flex: 1; /* takes the remaining space */
-        background-color: #fff;
         border-left: 1px dashed #ccc;
         border-right: 1px dashed #ccc;
         padding: 10px;
@@ -143,12 +145,56 @@
   right: 65px;
   top: 0px;
 }
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.title-version-wrapper {
+    display: flex; /* This will align children elements in a row */
+    align-items: center; /* This will vertically center the children elements */
+}
     </style>
   </head>
   <body>
     <div id="left">
       <div id="title-editor">
-        <input type="text" id="title-input" placeholder="Enter Title..." />
+        <div class="title-version-wrapper">
+          <input type="text" id="title-input" placeholder="Enter Title..." />
+          <p>v1.1</p>
+        </div>
         <div class="dropdown">
           <button onclick="toggleDropdown()">Actions</button>
           <div id="dropdown-menu" class="dropdown-content">
@@ -174,10 +220,72 @@
     <div id="canvas"></div>
     <div id="style-editor">
       <textarea id="css-input" placeholder="Enter CSS here..."></textarea>
-      <button onclick="applyStyles()">Apply Styles</button>
+      <button onclick="applyStyles()">Apply</button>
+      <button onclick="openCssTemplatesModal()">Templates</button>
     </div>
-
+    <div id="cssTemplatesModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+          <h2>Select a CSS Template</h2>
+        <ul id="cssTemplatesList">
+          <!-- Templates will be listed here -->
+        </ul>
+      </div>
+    </div>
     <script>
+
+    function updateLibraryBackground() {
+  var cssInputValue = document.getElementById('css-input').value;
+  var isTextColorWhite = cssInputValue.includes('color: white;') || cssInputValue.includes('color:white;');
+
+  var libraryElements = document.querySelectorAll('#library p, #library h1, #library h2, #library h3, #library h4, #library h5, #library h6, #library button');
+  libraryElements.forEach(function(element) {
+    element.style.backgroundColor = isTextColorWhite ? 'black' : 'white';
+  });
+}
+
+      // Sample CSS Templates
+const cssTemplates = {
+  "Light Theme": `
+    body { background-color: #fff; color: black; font-family: 'Arial', sans-serif }`,
+
+  "Dark Theme": `
+    body { background-color: #121212; color: white; font-family: 'Arial', sans-serif }`,
+
+  "Terminal Theme": `
+    body { background-color: black; color: limegreen; font-family: 'Courier New', monospace; }`,
+
+  "Colorful Theme": `
+    body { background-color: peachpuff; color: darkslategray; font-family: 'Reem Kufi Fun', sans-serif; }`
+};
+
+// Function to open the CSS Templates modal
+function openCssTemplatesModal() {
+  var modal = document.getElementById('cssTemplatesModal');
+  modal.style.display = 'block';
+  populateCssTemplates();
+}
+
+// Function to populate the list of CSS templates
+function populateCssTemplates() {
+  var list = document.getElementById('cssTemplatesList');
+  list.innerHTML = '';
+  Object.keys(cssTemplates).forEach(function(key) {
+    var button = document.createElement('button');
+    button.innerText = key;
+    button.onclick = function() { selectCssTemplate(key); };
+    button.style.margin = '5px';
+    list.appendChild(button);
+  });
+}
+
+function selectCssTemplate(templateName) {
+  var css = cssTemplates[templateName];
+  document.getElementById('css-input').value = css;
+  applyStyles();  // Apply the styles immediately
+  closeCssTemplatesModal();
+}
+
       function adjustCanvasWidth() {
         var libraryWidth = document.getElementById('library').offsetWidth;
         var canvas = document.getElementById('canvas');
@@ -199,6 +307,11 @@
 canvas.addEventListener('dragover', function(event) {
   event.preventDefault();
 });
+
+document.getElementById('closeModal').addEventListener('click', function() {
+  document.getElementById('cssTemplatesModal').style.display = 'none';
+});
+
 
 function toggleDropdown() {
   document.getElementById("dropdown-menu").classList.toggle("show");
@@ -267,24 +380,23 @@ deleteBtn.onclick = function() {
   canvas.appendChild(newElement);
 
    // Improved applyStyles function
-    function applyStyles() {
-  var css = document.getElementById('css-input').value;
-  var scopedCss = scopeCSS(css, '#canvas, #library');
+    // ... other JavaScript code ...
 
-  var customStyleElement = document.getElementById('custom-styles');
-  if (!customStyleElement) {
-    customStyleElement = document.createElement('style');
-    customStyleElement.type = 'text/css';
-    customStyleElement.id = 'custom-styles';
-    document.head.appendChild(customStyleElement);
-  }
+document.getElementById('css-input').addEventListener('input', applyStyles);
 
-  customStyleElement.innerText = scopedCss;
+function applyStyles() {
+    var css = document.getElementById('css-input').value;
 
-  // Apply body styles to the canvas
-  if (css.includes("body {")) {
-    applyBodyStylesToCanvas(css);
-  }
+    var customStyleElement = document.getElementById('custom-styles');
+    if (!customStyleElement) {
+        customStyleElement = document.createElement('style');
+        customStyleElement.type = 'text/css';
+        customStyleElement.id = 'custom-styles';
+        document.head.appendChild(customStyleElement);
+    }
+
+    customStyleElement.innerText = css;
+    updateLibraryBackground(); // Update the library background color
 }
 
 function applyBodyStylesToCanvas(css) {
@@ -398,9 +510,12 @@ function addLinkButton(element) {
 
 function addTrashButton(element) {
   var deleteBtn = createButton('<i class="fa fa-trash"></i>', 'htmleditor-trash-button');
-  deleteBtn.onclick = function() { element.remove(); };
+  deleteBtn.onclick = function() {
+    element.parentNode.remove();
+  };
   element.appendChild(deleteBtn);
 }
+
 
 function createButton(html, className) {
   var btn = document.createElement('button');
