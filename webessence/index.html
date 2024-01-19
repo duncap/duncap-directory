@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>web essence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://duncap.github.io/webessence/icon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -186,6 +187,36 @@
     display: flex; /* This will align children elements in a row */
     align-items: center; /* This will vertically center the children elements */
 }
+
+@media screen and (max-width: 600px) {
+    #left {
+        /* Collapse the sidebar for small screens */
+        flex: 0 0 50px; /* Adjusted width */
+        overflow-x: hidden;
+    }
+
+    #canvas, #style-editor {
+        /* Adjust the main content area */
+        flex: 1;
+        width: 100%;
+    }
+
+    .modal-content {
+        /* Ensure modals are not too wide */
+        width: 90%;
+    }
+
+    .dropdown-content {
+        /* Adjust dropdown positioning */
+        position: static;
+    }
+
+    /* Adjust text and button sizes if necessary */
+    body, button, input, textarea {
+        font-size: 16px; /* Larger font size for readability */
+    }
+}
+
     </style>
   </head>
   <body>
@@ -236,11 +267,12 @@
 
     function updateLibraryBackground() {
   var cssInputValue = document.getElementById('css-input').value;
-  var isTextColorWhite = cssInputValue.includes('color: white;') || cssInputValue.includes('color:white;');
+  var backgroundColorMatch = cssInputValue.match(/body\s*\{\s*background-color:\s*([^;]+);/);
+  var backgroundColor = backgroundColorMatch ? backgroundColorMatch[1] : '#fff';
 
   var libraryElements = document.querySelectorAll('#library p, #library h1, #library h2, #library h3, #library h4, #library h5, #library h6, #library button');
   libraryElements.forEach(function(element) {
-    element.style.backgroundColor = isTextColorWhite ? 'black' : 'white';
+    element.style.backgroundColor = backgroundColor;
   });
 }
 
