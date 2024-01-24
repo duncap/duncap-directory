@@ -13,9 +13,9 @@
   font-family: win95;
   src: url(https://duncap.github.io/MS.ttf);
 }
-	
+    
 :root {
-	--blue-gradient: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #333 100%) center/cover no-repeat;
+    --blue-gradient: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #333 100%) center/cover no-repeat;
         --lighter-blue: #08216b;
         --even-lighter-blue: #silver;
         --lightest-blue: #silver;
@@ -34,6 +34,21 @@ inner {
 }
 
 button {
+    order-width: 2px;
+    border-style: outset;
+    border-color: buttonface;
+    border-right-color: #424242;
+    border-bottom-color: #424242;
+    background: silver;
+    font-family: win95;
+    color: black;
+    padding: 4px;
+    border-radius: 1px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+input {
     order-width: 2px;
     border-style: outset;
     border-color: buttonface;
@@ -120,7 +135,12 @@ main {
    border-left-color: #fff;
    border-top-color: #fff;
 }
-</style>
+
+label {
+  font-family: win95;
+  margin: 20px;
+}
+    </style>
 <main>
   <h2>404</h2>
   <p>this isn't a page dumbass.</p>
