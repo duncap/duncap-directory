@@ -142,27 +142,29 @@ label {
 }
     </style>
     <script type="text/javascript">
-        window.onload = function() {
-            document.getElementById('myForm').addEventListener('submit', function(e) {
-                e.preventDefault();
+    window.onload = function() {
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-                const formData = new FormData(this);
-                fetch('/api/send-email', { // Adjust the URL if your endpoint is different
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(data => {
-                    alert('Form successfully submitted');
-                    console.log(data);
-                })
-                .catch(error => {
-                    alert('Submission failed. Please try again.');
-                    console.error('Error:', error);
-                });
-            });
-        };
-    </script>
+            // Get the page title and author
+            const pageTitle = document.getElementById('pageTitle').value;
+            const author = document.getElementById('author').value;
+
+            // Construct the email body with the author
+            const emailBody = `Author: ${author}`;
+
+            // Construct Gmail URL with subject and body
+            const email = 'gabriel_navarro@student.thesae.org';
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(emailBody)}`;
+
+            // Open the Gmail URL in a new window
+            window.open(gmailUrl, '_blank');
+
+            // Prompt the user to manually attach the file
+            alert('Please attach the HTML file manually in the opened Gmail window.');
+        });
+    };
+</script>
 </head>
 <body>
     <main>
@@ -170,8 +172,8 @@ label {
         <form id="myForm" enctype="multipart/form-data">
             <label for="pageTitle"><p>page title:</p></label>
             <input type="text" id="pageTitle" name="pageTitle" required>
-            <label for="fileUpload"><p>html file:</p></label>
-            <input type="file" id="fileUpload" name="fileUpload" accept=".html" required>
+            <label for="author"><p>author:</p></label>
+            <input type="text" id="author" name="author" required>
             <input type="submit" value="Submit">
         </form>
         <p>don't have a file and don't know how to code? (at least html) use <a href="https://duncap.github.io/webessence">web essence</a>.</p>
