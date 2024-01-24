@@ -121,11 +121,53 @@ main {
    border-top-color: #fff;
 }
 </style>
-<main>
-  <h2>directory m8</h2>
-  <p>user generated pages that i fuck around with. (always updating)</p><a href="https://duncap.github.io/submit"><p>submit your page here</p></a>
-  <a href="https://duncap.github.io/legalagreement"><button>legal agreement by duncap</button></a>
-  <a href="https://duncap.github.io/directory/gyatt"><button>gyatt by bawls</button></a>
-  <a href="https://duncap.github.io/directory/shrek"><button>shrek by sebastian</button></a>
-</main>
+<script>
+    // Function to fetch file update times from GitHub and create buttons
+    async function generateButtons() {
+        const files = [
+            { name: "legal agreement by duncap", path: "legalagreement" },
+            { name: "gyatt by bawls", path: "directory/gyatt" },
+            { name: "shrek by sebastian", path: "directory/shrek" }
+        ];
+
+        // Fetch last update times from GitHub
+        const promises = files.map(file =>
+            fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`)
+                .then(response => response.json())
+                .then(commits => {
+                    if (commits.length > 0) {
+                        file.lastUpdated = new Date(commits[0].commit.committer.date);
+                    } else {
+                        file.lastUpdated = new Date(0); // Default to epoch time if no commits
+                    }
+                })
+        );
+
+        await Promise.all(promises);
+
+        // Sort files based on last updated time
+        files.sort((a, b) => b.lastUpdated - a.lastUpdated);
+
+        // Create buttons
+        const container = document.getElementById("buttonsContainer");
+        files.forEach(file => {
+            const button = document.createElement("a");
+            button.href = `https://duncap.github.io/${file.path}`;
+            button.innerHTML = `<button>${file.name}</button>`;
+            container.appendChild(button);
+        });
+    }
+
+    // Run the function when the window loads
+    window.onload = generateButtons;
+    </script>
+</head>
+<body>
+    <main>
+        <h2>directory m8</h2>
+        <p>user generated pages that i fuck around with. (always updating)</p>
+        <a href="https://duncap.github.io/submit"><p>submit your page here</p></a>
+        <div id="buttonsContainer"></div> <!-- Container for dynamically added buttons -->
+    </main>
+</body>
 </html>
