@@ -142,28 +142,31 @@ label {
 }
     </style>
     <script type="text/javascript">
-    window.onload = function() {
-        document.getElementById('myForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        window.onload = function() {
+            document.getElementById('myForm').addEventListener('submit', function(e) {
+                e.preventDefault();
 
-            // Get the page title and author
-            const pageTitle = document.getElementById('pageTitle').value;
-            const author = document.getElementById('author').value;
+                // Get the page title and author
+                const pageTitle = document.getElementById('pageTitle').value;
+                const author = document.getElementById('author').value;
 
-            // Construct the email body with the author
-            const emailBody = `Author: ${author}`;
+                // Construct the email body with the author
+                const emailBody = `Author: ${author}`;
 
-            // Construct Gmail URL with subject and body
-            const email = 'gabriel_navarro@student.thesae.org';
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(emailBody)}`;
+                // Construct Gmail URL with subject and body
+                const email = 'gabriel_navarro@student.thesae.org';
+                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(emailBody)}`;
 
-            // Prompt the user to manually attach the file, then redirect
-            alert('Please attach the HTML file manually in the opened Gmail window.', function() {
-                window.open(gmailUrl, '_blank');
+                // Show the alert
+                alert('Please attach the HTML file manually in the opened Gmail window.');
+
+                // Open the Gmail URL in a new window after alert is dismissed
+                setTimeout(function() {
+                    window.open(gmailUrl, '_blank');
+                }, 100); // Delay of 100 milliseconds
             });
-        });
-    };
-</script>
+        };
+    </script>
 </head>
 <body>
     <main>
