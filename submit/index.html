@@ -157,11 +157,10 @@ label {
             const email = 'gabriel_navarro@student.thesae.org';
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(emailBody)}`;
 
-            // Open the Gmail URL in a new window
-            window.open(gmailUrl, '_blank');
-
-            // Prompt the user to manually attach the file
-            alert('Please attach the HTML file manually in the opened Gmail window.');
+            // Prompt the user to manually attach the file, then redirect
+            alert('Please attach the HTML file manually in the opened Gmail window.', function() {
+                window.open(gmailUrl, '_blank');
+            });
         });
     };
 </script>
