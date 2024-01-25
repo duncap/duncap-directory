@@ -1,5 +1,7 @@
 <html>
 <title>
+   duncap dir<html>
+<title>
    duncap directory
 </title>
 <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/duncap/duncap.github.io/main/icon.ico"/>
@@ -13,9 +15,9 @@
   font-family: win95;
   src: url(https://duncap.github.io/MS.ttf);
 }
-	
+
 :root {
-	--blue-gradient: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #333 100%) center/cover no-repeat;
+--blue-gradient: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #333 100%) center/cover no-repeat;
         --lighter-blue: #08216b;
         --even-lighter-blue: #silver;
         --lightest-blue: #silver;
@@ -137,38 +139,42 @@ main {
 }
 </style>
 <script>
-let files = [
-    { name: "legal agreement by duncap", path: "legalagreement" },
-    { name: "gyatt by bawls", path: "page/gyatt" },
-    { name: "shrek by sebastian", path: "page/shrek" }
-];
+let files = [];
 
 async function fetchCommitData(file) {
-    let firstCommit, latestCommit;
     const commitsResponse = await fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`);
     const commits = await commitsResponse.json();
 
     if (commits.length > 0) {
-        latestCommit = new Date(commits[0].commit.committer.date);
-        firstCommit = new Date(commits[commits.length - 1].commit.committer.date);
+        const latestCommit = new Date(commits[0].commit.committer.date);
+        const firstCommit = new Date(commits[commits.length - 1].commit.committer.date);
+        return { ...file, latestCommit, firstCommit };
+    } else {
+        return { ...file, latestCommit: new Date(0), firstCommit: new Date(0) };
     }
-
-    return {
-        ...file,
-        firstCommit: firstCommit,
-        latestCommit: latestCommit
-    };
 }
 
-async function updateFiles() {
-    const updatedFiles = await Promise.all(files.map(fetchCommitData));
-    files = updatedFiles;
+async function fetchDirectories() {
+    const repoUrl = 'https://api.github.com/repos/duncap/duncap.github.io/contents/page';
+    const response = await fetch(repoUrl);
+    const directories = await response.json();
+    return directories.filter(item => item.type === 'dir').map(dir => ({ path: dir.path }));
+}
+
+async function fetchAndUpdateFiles() {
+    const directories = await fetchDirectories();
+    const fileDataPromises = directories.map(async (dir) => {
+        const metadataContent = await fetchFileContent(`${dir.path}/metadata.txt`);
+        const buttonName = metadataContent.trim();
+        return fetchCommitData({ ...dir, name: buttonName });
+    });
+
+    files = await Promise.all(fileDataPromises);
     sortAndDisplayButtons();
 }
 
 function sortAndDisplayButtons() {
     const sortValue = document.getElementById('sortSelect').value;
-
     if (sortValue === 'latest') {
         files.sort((a, b) => b.latestCommit - a.latestCommit);
     } else if (sortValue === 'oldest') {
@@ -176,16 +182,18 @@ function sortAndDisplayButtons() {
     }
 
     const container = document.getElementById("buttonsContainer");
-    container.innerHTML = files.map(file => `<a href="https://duncap.github.io/${file.path}"><button>${file.name}</button></a>`).join('');
+    container.innerHTML = files.map(file => `<a href="https://duncap.github.io/${file.path}/index.html"><button>${file.name}</button></a>`).join('');
 }
 
-// Initial load
 window.onload = async () => {
-    await updateFiles();
-    setInterval(updateFiles, 3000);
+    await fetchAndUpdateFiles();
+    setInterval(fetchAndUpdateFiles, 3000);
 };
+
+function fetchFileContent(path) {
+    return fetch(`https://raw.githubusercontent.com/duncap/duncap.github.io/main/${path}`).then(response => response.text());
+}
 </script>
-</head>
 <body>
     <main>
         <h2>duncap directory m8</h2>
