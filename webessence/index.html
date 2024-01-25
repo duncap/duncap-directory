@@ -411,9 +411,6 @@ deleteBtn.onclick = function() {
   newElement.appendChild(deleteBtn);
   canvas.appendChild(newElement);
 
-   // Improved applyStyles function
-    // ... other JavaScript code ...
-
 document.getElementById('css-input').addEventListener('input', applyStyles);
 
 function applyStyles() {
@@ -438,35 +435,49 @@ function applyBodyStylesToCanvas(css) {
 }
 
     // Helper function to scope CSS
-function scopeCSS(css, scope) {
-  var scopedRules = [];
-  css.split('}').forEach(function(rule) {
-    var trimmedRule = rule.trim();
-    if (trimmedRule) {
-      var selectorAndStyles = trimmedRule.split('{');
-      if (selectorAndStyles.length === 2) {
-        var selectors = selectorAndStyles[0].trim().split(',');
-        var scopedSelectors = selectors.map(function(selector) {
-          // Check if the selector is a direct tag selector for headings
-          if (selector.match(/^h[1-6]$/)) {
-            // Apply scope only to the canvas for these selectors
-            return '#canvas ' + selector.trim();
-          } else {
-            // For other selectors, apply the original scope (canvas and library)
-            return scope.split(',').map(function(scopedPrefix) {
-              return scopedPrefix.trim() + ' ' + selector.trim();
-            }).join(', ');
-          }
-        }).join(', ');
-        scopedRules.push(scopedSelectors + ' { ' + selectorAndStyles[1]);
-      }
+function applyStyles() {
+    var css = document.getElementById('css-input').value;
+    var scopedCss = scopeCSS(css, '#canvas, #library');
+
+    var customStyleElement = document.getElementById('custom-styles');
+    if (!customStyleElement) {
+        customStyleElement = document.createElement('style');
+        customStyleElement.type = 'text/css';
+        customStyleElement.id = 'custom-styles';
+        document.head.appendChild(customStyleElement);
     }
-  });
-  return scopedRules.join('} ');
 
-  // Join all the scoped rules with '}' to close each rule block
-  return scopedRules.join('} ');
+    customStyleElement.innerText = scopedCss;
+    updateLibraryBackground(); // Update the library background color
+}
 
+// Helper function to scope CSS
+function scopeCSS(css, scope) {
+    var scopedRules = [];
+    css.split('}').forEach(function(rule) {
+        var trimmedRule = rule.trim();
+        if (trimmedRule) {
+            var selectorAndStyles = trimmedRule.split('{');
+            if (selectorAndStyles.length === 2) {
+                var selectors = selectorAndStyles[0].trim().split(',');
+                var scopedSelectors = selectors.map(function(selector) {
+                    // Check if the selector is a direct tag selector for headings
+                    if (selector.match(/^h[1-6]$/)) {
+                        // Apply scope only to the canvas for these selectors
+                        return '#canvas ' + selector.trim();
+                    } else {
+                        // For other selectors, apply the original scope (canvas and library)
+                        return scope.split(',').map(function(scopedPrefix) {
+                            return scopedPrefix.trim() + ' ' + selector.trim();
+                        }).join(', ');
+                    }
+                }).join(', ');
+                scopedRules.push(scopedSelectors + ' { ' + selectorAndStyles[1]);
+            }
+        }
+    });
+  return scopedRules.join('} ');
+  
   var styleSheet = document.createElement('style');
   styleSheet.type = 'text/css';
   styleSheet.innerText = scopedCss;
