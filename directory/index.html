@@ -34,7 +34,7 @@ inner {
 }
 
 button {
-    order-width: 2px;
+    border-width: 2px;
     border-style: outset;
     border-color: buttonface;
     border-right-color: #424242;
@@ -44,6 +44,21 @@ button {
     color: black;
     padding: 4px;
     border-radius: 1px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+select {
+    border-width: 2px;  /* Ensure the border thickness is 2px */
+    border-style: outset;
+    border-color: buttonface;
+    border-right-color: #424242;
+    border-bottom-color: #424242;
+    background: silver;
+    font-family: win95;
+    color: black;
+    padding: 4px;
+    border-radius: 1px;  /* Match the border-radius with the button */
     margin-left: 20px;
     margin-bottom: 20px;
 }
@@ -121,15 +136,14 @@ main {
    border-top-color: #fff;
 }
 </style>
-<script>
-    // Function to fetch file update times from GitHub and create buttons
-    async function generateButtons() {
-        const files = [
-            { name: "legal agreement by duncap", path: "legalagreement" },
-            { name: "gyatt by bawls", path: "directory/gyatt" },
-            { name: "shrek by sebastian", path: "directory/shrek" }
-        ];
+    <script>
+    let files = [
+        { name: "legal agreement by duncap", path: "legalagreement" },
+        { name: "gyatt by bawls", path: "directory/gyatt" },
+        { name: "shrek by sebastian", path: "directory/shrek" }
+    ];
 
+    async function fetchAndUpdateButtons() {
         // Fetch last update times from GitHub
         const promises = files.map(file =>
             fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`)
@@ -144,12 +158,23 @@ main {
         );
 
         await Promise.all(promises);
+        sortAndDisplayButtons();
+    }
 
-        // Sort files based on last updated time
-        files.sort((a, b) => b.lastUpdated - a.lastUpdated);
+    function sortAndDisplayButtons() {
+        // Get sort value
+        const sortValue = document.getElementById('sortSelect').value;
+
+        // Sort files based on selected sort value
+        if (sortValue === 'latest') {
+            files.sort((a, b) => b.lastUpdated - a.lastUpdated);
+        } else if (sortValue === 'oldest') {
+            files.sort((a, b) => a.lastUpdated - b.lastUpdated);
+        }
 
         // Create buttons
         const container = document.getElementById("buttonsContainer");
+        container.innerHTML = ''; // Clear existing buttons
         files.forEach(file => {
             const button = document.createElement("a");
             button.href = `https://duncap.github.io/${file.path}`;
@@ -159,7 +184,7 @@ main {
     }
 
     // Run the function when the window loads
-    window.onload = generateButtons;
+    window.onload = fetchAndUpdateButtons;
     </script>
 </head>
 <body>
@@ -167,7 +192,11 @@ main {
         <h2>directory m8</h2>
         <p>fuckin stupid user generated pages (always updating)</p>
         <a href="https://duncap.github.io/submit"><p>submit your page here</p></a>
-        <div id="buttonsContainer"></div> <!-- Container for dynamically added buttons -->
+        <select id="sortSelect" onchange="sortAndDisplayButtons()">
+            <option value="latest">Latest Updated</option>
+            <option value="oldest">Oldest</option>
+        </select>
+        <div id="buttonsContainer"></div>
     </main>
 </body>
 </html>
