@@ -146,15 +146,14 @@ let files = [
 async function fetchAndUpdateButtons() {
     // Fetch commit data from GitHub
     const promises = files.map(file =>
-        fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}&per_page=1&page=1`)
+        fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`)
             .then(response => response.json())
             .then(commits => {
                 if (commits.length > 0) {
-                    file.firstCommit = new Date(commits[commits.length - 1].commit.committer.date); // Get date of first commit
-                    file.lastUpdated = new Date(commits[0].commit.committer.date); // Get date of last commit
+                    // Assuming the last commit in the list is the first commit for the file
+                    file.firstCommit = new Date(commits[commits.length - 1].commit.committer.date);
                 } else {
                     file.firstCommit = new Date(0); // Default to epoch time if no commits
-                    file.lastUpdated = new Date(0);
                 }
             })
     );
@@ -169,9 +168,9 @@ function sortAndDisplayButtons() {
 
     // Sort files based on selected sort value
     if (sortValue === 'latest') {
-        files.sort((a, b) => b.lastUpdated - a.lastUpdated);
+        files.sort((a, b) => b.firstCommit - a.firstCommit); // Sort by latest first commit
     } else if (sortValue === 'oldest') {
-        files.sort((a, b) => a.firstCommit - b.firstCommit);
+        files.sort((a, b) => a.firstCommit - b.firstCommit); // Sort by oldest first commit
     }
 
     // Create buttons
