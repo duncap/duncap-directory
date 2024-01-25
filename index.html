@@ -1,6 +1,6 @@
 <html>
 <title>
-   duncap's website
+   duncap directory
 </title>
 <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/duncap/duncap.github.io/main/icon.ico"/>
 <style>
@@ -44,6 +44,21 @@ button {
     color: black;
     padding: 4px;
     border-radius: 1px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+select {
+    border-width: 2px;  /* Ensure the border thickness is 2px */
+    border-style: outset;
+    border-color: buttonface;
+    border-right-color: #424242;
+    border-bottom-color: #424242;
+    background: silver;
+    font-family: win95;
+    color: black;
+    padding: 4px;
+    border-radius: 1px;  /* Match the border-radius with the button */
     margin-left: 20px;
     margin-bottom: 20px;
 }
@@ -121,11 +136,67 @@ main {
    border-top-color: #fff;
 }
 </style>
-<main>
-  <h2>yo. welcome to my website.</h2>
-  <p>you could find a bunch of stupid shit i've done on here. click any of the buttons to navigate to a page on the website.</p>
-  <a href="https://duncap.github.io/directory"><button>directory</button></a>
-  <a href="https://duncap.github.io/funnimancorp"><button>funni man corp.</button></a>
-  <a href="https://duncap.github.io/webessence"><button>web essence</button></a>
-</main>
+    <script>
+    let files = [
+        { name: "legal agreement by duncap", path: "legalagreement" },
+        { name: "gyatt by bawls", path: "directory/gyatt" },
+        { name: "shrek by sebastian", path: "directory/shrek" }
+    ];
+
+    async function fetchAndUpdateButtons() {
+        // Fetch last update times from GitHub
+        const promises = files.map(file =>
+            fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`)
+                .then(response => response.json())
+                .then(commits => {
+                    if (commits.length > 0) {
+                        file.lastUpdated = new Date(commits[0].commit.committer.date);
+                    } else {
+                        file.lastUpdated = new Date(0); // Default to epoch time if no commits
+                    }
+                })
+        );
+
+        await Promise.all(promises);
+        sortAndDisplayButtons();
+    }
+
+    function sortAndDisplayButtons() {
+        // Get sort value
+        const sortValue = document.getElementById('sortSelect').value;
+
+        // Sort files based on selected sort value
+        if (sortValue === 'latest') {
+            files.sort((a, b) => b.lastUpdated - a.lastUpdated);
+        } else if (sortValue === 'oldest') {
+            files.sort((a, b) => a.lastUpdated - b.lastUpdated);
+        }
+
+        // Create buttons
+        const container = document.getElementById("buttonsContainer");
+        container.innerHTML = ''; // Clear existing buttons
+        files.forEach(file => {
+            const button = document.createElement("a");
+            button.href = `https://duncap.github.io/${file.path}`;
+            button.innerHTML = `<button>${file.name}</button>`;
+            container.appendChild(button);
+        });
+    }
+
+    // Run the function when the window loads
+    window.onload = fetchAndUpdateButtons;
+    </script>
+</head>
+<body>
+    <main>
+        <h2>duncap directory m8</h2>
+        <p>user-generated pages or some shit (always updating).</p>
+        <a href="https://duncap.github.io/submit"><p>submit your page here</p></a>
+        <select id="sortSelect" onchange="sortAndDisplayButtons()">
+            <option value="latest">latest updated</option>
+            <option value="oldest">oldest</option>
+        </select>
+        <div id="buttonsContainer"></div>
+    </main>
+</body>
 </html>
