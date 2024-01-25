@@ -143,40 +143,32 @@ let files = [
     { name: "shrek by sebastian", path: "page/shrek" }
 ];
 
-async function fetchCommitData() {
-    return Promise.all(files.map(file => 
+async function fetchAndUpdateButtons() {
+    // Fetch commit data from GitHub
+    const promises = files.map(file => 
         Promise.all([
             fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}&per_page=1`)
                 .then(response => response.json())
                 .then(commits => {
                     if (commits.length > 0) {
-                        return { ...file, latestCommit: new Date(commits[0].commit.committer.date) };
+                        file.latestCommit = new Date(commits[0].commit.committer.date);
                     }
-                    return { ...file };
                 }),
             fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}&per_page=1&page=1`)
                 .then(response => response.json())
                 .then(commits => {
                     if (commits.length > 0) {
-                        return { ...file, firstCommit: new Date(commits[commits.length - 1].commit.committer.date) };
+                        file.firstCommit = new Date(commits[commits.length - 1].commit.committer.date);
                     }
-                    return { ...file };
                 })
-        ]).then(([latest, first]) => ({ ...latest, ...first }))
-    ));
+        ])
+    );
+
+    await Promise.all(promises);
+    sortAndDisplayButtons();
 }
 
-function updateButtons(newFiles) {
-    const container = document.getElementById("buttonsContainer");
-
-    // Check if there is any change
-    if (JSON.stringify(files) !== JSON.stringify(newFiles)) {
-        files = newFiles;
-        sortAndDisplayButtons();
-    }
-}
-
-async function sortAndDisplayButtons() {
+function sortAndDisplayButtons() {
     // Get sort value
     const sortValue = document.getElementById('sortSelect').value;
 
@@ -187,39 +179,19 @@ async function sortAndDisplayButtons() {
         files.sort((a, b) => a.firstCommit - b.firstCommit);
     }
 
-    // Update buttons smoothly without clearing
+    // Create buttons
     const container = document.getElementById("buttonsContainer");
-    const existingButtons = Array.from(container.querySelectorAll('a'));
-    const updatedButtons = files.map(file => {
-        const buttonHTML = `<a href="https://duncap.github.io/${file.path}"><button>${file.name}</button></a>`;
-        return buttonHTML;
+    container.innerHTML = ''; // Clear existing buttons
+    files.forEach(file => {
+        const button = document.createElement("a");
+        button.href = `https://duncap.github.io/${file.path}`;
+        button.innerHTML = `<button>${file.name}</button>`;
+        container.appendChild(button);
     });
-
-    // Update or add buttons
-    updatedButtons.forEach((buttonHTML, index) => {
-        if (existingButtons[index] && existingButtons[index].outerHTML !== buttonHTML) {
-            existingButtons[index].outerHTML = buttonHTML;
-        } else if (!existingButtons[index]) {
-            container.insertAdjacentHTML('beforeend', buttonHTML);
-        }
-    });
-
-    // Remove extra buttons if any
-    while (existingButtons.length > files.length) {
-        container.removeChild(container.lastChild);
-    }
 }
 
-// Initial fetch and display
-fetchCommitData().then(updateButtons);
-
-// Periodic check every 3 seconds
-setInterval(() => {
-    fetchCommitData().then(updateButtons);
-}, 3000);
-
 // Run the function when the window loads
-window.onload = sortAndDisplayButtons;
+window.onload = fetchAndUpdateButtons;
 </script>
 </head>
 <body>
