@@ -182,7 +182,7 @@ function sortAndDisplayButtons() {
     }
 
     const container = document.getElementById("buttonsContainer");
-    container.innerHTML = files.map(file => `<a href="https://duncap.github.io/${file.path}/index.html"><button>${file.name}</button></a>`).join('');
+    container.innerHTML = files.map(file => `<a href="https://duncap.dev/${file.path}/"><button>${file.name}</button></a>`).join('');
 }
 
 window.onload = async () => {
