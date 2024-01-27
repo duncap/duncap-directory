@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>web essence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://duncap.github.io/webessence/icon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi+Fun:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"></script>
+    <style>
+      @font-face {
+        font-family: 'Default';
+        src: url('https://duncap.github.io/webessence/default.otf') format('opentype');
+      }
+
+      body {
+        margin: 0;
+        display: flex;
+        height: 100vh;
+      }
+
+      #title {
+        font-family: Default;
+      }
+
+      #title-bar {
+        -webkit-app-region: drag;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+      }
+
+      /* Ensure window control buttons are not draggable */
+      #window-controls button {
+        -webkit-app-region: no-drag;
+      }
+
+      #left {
+        flex: 0 0 20%; /* 20% of the container width */
+        overflow-y: scroll;
+        background-color: #f0f0f0;
+      }
+
+      #canvas {
+        flex: 1; /* takes the remaining space */
+        border-left: 1px dashed #ccc;
+        border-right: 1px dashed #ccc;
+        padding: 10px;
+      }
+
+      #style-editor {
+        flex: 0 0 20%; /* 20% of the container width */
+        background-color: #f0f0f0;
+        padding: 10px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 90%;
+        box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+      }
+
+      /* Styling the draggable elements */
+      #library p, #library h1, #library h2, #library h3, #library h4, #library h5, #library h6, #library button {
+        cursor: grab;
+        border: 1px dashed #ccc;
+        background-color: #fff;
+        padding: 5px;
+        margin: 10px;
+      }
+
+      #title-editor {
+        padding: 10px;
+      }
+
+#title-input {
+  flex-grow: 1; /* Allow input to take the available space */
+  margin-right: 10px; /* Add spacing between the input and the button */
+  box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+  font-family: 'Default', sans-serif;
+}
+
+/* Container needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+/* Show dropdown content when .show is added */
+.dropdown-content.show {
+  display: block;
+}
+
+.htmleditor-link-button {
+  margin-left: 5px;
+}
+
+.htmleditor-editable-element {
+  position: relative;
+  justify-content: space-between; /* Align content and buttons */
+}
+
+.htmleditor-editable-element > *:first-child {
+  flex-grow: 1; /* Allow the first child (button or other element) to grow */
+}
+
+.htmleditor-editable-element button {
+  position: relative;
+  margin-left: 5px; /* Spacing between buttons */
+}
+
+.htmleditor-editable-element .htmleditor-trash-button {
+  float: right; /* Adjust position as needed 
+  */
+  top: 0px;
+}
+
+.htmleditor-editable-element .htmleditor-link-button {
+  float: right;
+  right: 65px;
+  top: 0px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.title-version-wrapper {
+    display: flex; /* This will align children elements in a row */
+    align-items: center; /* This will vertically center the children elements */
+}
+
+@media screen and (max-width: 600px) {
+    #left {
+        /* Collapse the sidebar for small screens */
+        flex: 0 0 50px; /* Adjusted width */
+        overflow-x: hidden;
+    }
+
+    #canvas, #style-editor {
+        /* Adjust the main content area */
+        flex: 1;
+        width: 100%;
+    }
+
+    .modal-content {
+        /* Ensure modals are not too wide */
+        width: 90%;
+    }
+
+    .dropdown-content {
+        /* Adjust dropdown positioning */
+        position: static;
+    }
+
+    /* Adjust text and button sizes if necessary */
+    body, button, input, textarea {
+        font-size: 16px; /* Larger font size for readability */
+    }
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="left">
+      <div id="title-editor">
+        <div class="title-version-wrapper">
+          <input type="text" id="title-input" placeholder="Enter Title..." />
+          <p>v1.1</p>
+        </div>
+        <div class="dropdown">
+          <button onclick="toggleDropdown()">Actions</button>
+          <div id="dropdown-menu" class="dropdown-content">
+          <a href="#" onclick="exportCanvas(); return false;">Compile</a>
+          <a href="#" onclick="document.getElementById('html-file-input').click(); return false;">Import</a>
+          </div>
+        </div>
+
+<input type="file" id="html-file-input" accept=".json" style="display: none;" onchange="importJSON()" />
+</div>
+      <div id="library">
+      <!-- Draggable elements -->
+        <h1 draggable="true">Heading 1</h1>
+        <h2 draggable="true">Heading 2</h2>
+        <h3 draggable="true">Heading 3</h3>
+        <h4 draggable="true">Heading 4</h4>
+        <h5 draggable="true">Heading 5</h5>
+        <h6 draggable="true">Heading 6</h6>
+        <p draggable="true">Paragraph</p>
+        <button draggable="true">Button</button>
+    </div>
+  </div>
+    <div id="canvas"></div>
+    <div id="style-editor">
+      <textarea id="css-input" placeholder="Enter CSS here..."></textarea>
+      <button onclick="applyStyles()">Apply</button>
+      <button onclick="openCssTemplatesModal()">Templates</button>
+    </div>
+    <div id="cssTemplatesModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+          <h2>Select a CSS Template</h2>
+        <ul id="cssTemplatesList">
+          <!-- Templates will be listed here -->
+        </ul>
+      </div>
+    </div>
+    <script>
+
+    function updateLibraryBackground() {
+  var cssInputValue = document.getElementById('css-input').value;
+  var backgroundColorMatch = cssInputValue.match(/body\s*\{\s*background-color:\s*([^;]+);/);
+  var backgroundColor = backgroundColorMatch ? backgroundColorMatch[1] : '#fff';
+
+  var libraryElements = document.querySelectorAll('#library p, #library h1, #library h2, #library h3, #library h4, #library h5, #library h6, #library button');
+  libraryElements.forEach(function(element) {
+    element.style.backgroundColor = backgroundColor;
+  });
+}
+
+      // Sample CSS Templates
+const cssTemplates = {
+  "Light Theme": `
+    body { background-color: #fff; color: black; font-family: 'Arial', sans-serif }`,
+
+  "Dark Theme": `
+    body { background-color: #121212; color: white; font-family: 'Arial', sans-serif }`,
+
+  "Terminal Theme": `
+    body { background-color: black; color: limegreen; font-family: 'Courier New', monospace; }`,
+
+  "Colorful Theme": `
+    body { background-color: peachpuff; color: darkslategray; font-family: 'Reem Kufi Fun', sans-serif; }`
+};
+
+// Function to open the CSS Templates modal
+function openCssTemplatesModal() {
+  var modal = document.getElementById('cssTemplatesModal');
+  modal.style.display = 'block';
+  populateCssTemplates();
+}
+
+// Function to populate the list of CSS templates
+function populateCssTemplates() {
+  var list = document.getElementById('cssTemplatesList');
+  list.innerHTML = '';
+  Object.keys(cssTemplates).forEach(function(key) {
+    var button = document.createElement('button');
+    button.innerText = key;
+    button.onclick = function() { selectCssTemplate(key); };
+    button.style.margin = '5px';
+    list.appendChild(button);
+  });
+}
+
+function selectCssTemplate(templateName) {
+  var css = cssTemplates[templateName];
+  document.getElementById('css-input').value = css;
+  applyStyles();  // Apply the styles immediately
+  closeCssTemplatesModal();
+}
+
+      function adjustCanvasWidth() {
+        var libraryWidth = document.getElementById('library').offsetWidth;
+        var canvas = document.getElementById('canvas');
+        var remainingWidth = window.innerWidth - libraryWidth;
+        canvas.style.width = remainingWidth - 45 + 'px';
+      }
+
+      window.onload = adjustCanvasWidth;
+      window.onresize = adjustCanvasWidth;
+
+      document.querySelectorAll('#library p, #library h1, #library h2, #library h3, #library h4, #library h5, #library h6, #library button').forEach(elem => {
+        elem.addEventListener('dragstart', function(event) {
+            event.dataTransfer.setData('text/html', this.outerHTML);
+        });
+      });
+
+      var canvas = document.getElementById('canvas');
+
+canvas.addEventListener('dragover', function(event) {
+  event.preventDefault();
+});
+
+document.getElementById('closeModal').addEventListener('click', function() {
+  document.getElementById('cssTemplatesModal').style.display = 'none';
+});
+
+
+function toggleDropdown() {
+  document.getElementById("dropdown-menu").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropdown button')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+function handleDeletion(e) {
+  const ZWSP = '\u200B'; // Zero Width Space
+  var element = e.target;
+
+  if ((e.key === 'Delete' || e.key === 'Backspace') && element.textContent === '') {
+    document.execCommand('insertHTML', false, ZWSP); // Insert the ZWSP
+    e.preventDefault(); // Prevent the default deletion behavior
+  } else if (element.textContent === ZWSP && e.key.length === 1) {
+    element.innerHTML = ''; // Remove the ZWSP before new input
+  }
+}
+
+canvas.addEventListener('drop', function(event) {
+  event.preventDefault();
+  var data = event.dataTransfer.getData('text/html');
+  var newElement = document.createElement('div');
+  newElement.innerHTML = data;
+  newElement.contentEditable = true;
+
+  // Check and wrap buttons in an anchor tag
+  Array.from(newElement.childNodes).forEach(function(child) {
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      if (child.tagName === 'BUTTON') {
+        var anchor = document.createElement('a');
+        anchor.appendChild(child.cloneNode(true));
+        makeEditable(anchor, true); // Pass the anchor and true for isButton
+        newElement.replaceChild(anchor, child);
+      } else {
+        makeEditable(child, false);
+      }
+    }
+  });
+
+  canvas.appendChild(newElement);
+});
+
+  // Create a delete button
+var deleteBtn = document.createElement('button');
+deleteBtn.innerHTML = '<i class="fa fa-trash"></i>'; // Font Awesome trash icon
+deleteBtn.classList.add('htmleditor-trash-button'); // Add class
+deleteBtn.style.float = 'right'; // Position it to the right
+deleteBtn.onclick = function() {
+  canvas.removeChild(newElement);
+};
+
+
+  newElement.appendChild(deleteBtn);
+  canvas.appendChild(newElement);
+
+document.getElementById('css-input').addEventListener('input', applyStyles);
+
+function applyStyles() {
+    var css = document.getElementById('css-input').value;
+
+    var customStyleElement = document.getElementById('custom-styles');
+    if (!customStyleElement) {
+        customStyleElement = document.createElement('style');
+        customStyleElement.type = 'text/css';
+        customStyleElement.id = 'custom-styles';
+        document.head.appendChild(customStyleElement);
+    }
+
+    customStyleElement.innerText = css;
+    updateLibraryBackground(); // Update the library background color
+}
+
+function applyBodyStylesToCanvas(css) {
+  var bodyStyleCss = css.match(/body\s*{([^}]*)}/)[1].trim();
+  var canvasElement = document.getElementById('canvas');
+  canvasElement.style.cssText += bodyStyleCss;
+}
+
+    // Helper function to scope CSS
+function applyStyles() {
+    var css = document.getElementById('css-input').value;
+    var scopedCss = scopeCSS(css, '#canvas, #library');
+
+    var customStyleElement = document.getElementById('custom-styles');
+    if (!customStyleElement) {
+        customStyleElement = document.createElement('style');
+        customStyleElement.type = 'text/css';
+        customStyleElement.id = 'custom-styles';
+        document.head.appendChild(customStyleElement);
+    }
+
+    customStyleElement.innerText = scopedCss;
+    updateLibraryBackground(); // Update the library background color
+}
+
+// Helper function to scope CSS
+function scopeCSS(css, scope) {
+    var scopedRules = [];
+    css.split('}').forEach(function(rule) {
+        var trimmedRule = rule.trim();
+        if (trimmedRule) {
+            var selectorAndStyles = trimmedRule.split('{');
+            if (selectorAndStyles.length === 2) {
+                var selectors = selectorAndStyles[0].trim().split(',');
+                var scopedSelectors = selectors.map(function(selector) {
+                    // Check if the selector is a direct tag selector for headings
+                    if (selector.match(/^h[1-6]$/)) {
+                        // Apply scope only to the canvas for these selectors
+                        return '#canvas ' + selector.trim();
+                    } else {
+                        // For other selectors, apply the original scope (canvas and library)
+                        return scope.split(',').map(function(scopedPrefix) {
+                            return scopedPrefix.trim() + ' ' + selector.trim();
+                        }).join(', ');
+                    }
+                }).join(', ');
+                scopedRules.push(scopedSelectors + ' { ' + selectorAndStyles[1]);
+            }
+        }
+    });
+  return scopedRules.join('} ');
+  
+  var styleSheet = document.createElement('style');
+  styleSheet.type = 'text/css';
+  styleSheet.innerText = scopedCss;
+  document.head.appendChild(styleSheet);
+}
+
+function importJSON() {
+  var fileInput = document.getElementById('html-file-input');
+  if (fileInput.files.length === 0) {
+    alert('No file selected.');
+    return;
+  }
+
+  var file = fileInput.files[0];
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    var content = e.target.result;
+    try {
+      var jsonData = JSON.parse(content);
+      document.getElementById('title-input').value = jsonData.title;
+      document.getElementById('css-input').value = jsonData.styles;
+
+      // Clear existing canvas content
+      var canvas = document.getElementById('canvas');
+      canvas.innerHTML = '';
+
+      // Create a container to temporarily hold the HTML content
+      var tempContainer = document.createElement('div');
+      tempContainer.innerHTML = jsonData.html;
+
+      // Process each child node
+      Array.from(tempContainer.childNodes).forEach(function(node) {
+        // Clone the node to avoid altering the original
+        var newNode = node.cloneNode(true);
+        
+        // Make newNode editable and add a trash button
+        makeEditable(newNode);
+
+        // Append newNode to the canvas
+        canvas.appendChild(newNode);
+      });
+
+      // Apply styles to the canvas
+      applyStyles();
+    } catch (error) {
+      alert('Error parsing JSON file');
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+function makeEditable(element, isButton) {
+  element.contentEditable = true; // Make the element editable
+  element.draggable = true;
+  element.classList.add('htmleditor-editable-element');
+
+  if (isButton || ['IFRAME', 'VIDEO', 'AUDIO'].includes(element.tagName)) {
+    addLinkButton(element);
+  }
+  addTrashButton(element);
+}
+
+function addLinkButton(element) {
+  var linkBtn = createButton('<i class="fa fa-link"></i>', 'htmleditor-link-button');
+  linkBtn.onclick = function() {
+    var url = prompt('Enter the URL:');
+    if (url) element.href = url;
+  };
+  element.appendChild(linkBtn);
+}
+
+function addTrashButton(element) {
+  var deleteBtn = createButton('<i class="fa fa-trash"></i>', 'htmleditor-trash-button');
+  deleteBtn.onclick = function() {
+    element.parentNode.remove();
+  };
+  element.appendChild(deleteBtn);
+}
+
+
+function createButton(html, className) {
+  var btn = document.createElement('button');
+  btn.innerHTML = html;
+  btn.classList.add(className);
+  btn.contentEditable = false; // Ensure the button is not editable
+  return btn;
+}
+
+function wrapElementInAnchor(element, url) {
+    var anchor = document.createElement('a');
+    anchor.href = url;
+    element.parentNode.insertBefore(anchor, element);
+    anchor.appendChild(element);
+}
+
+function exportCanvas() {
+    var title = document.getElementById('title-input').value || 'Untitled Page';
+    var canvasClone = document.getElementById('canvas').cloneNode(true);
+
+    // Disable contentEditable and draggable attributes in the clone
+    var editableElements = canvasClone.querySelectorAll('[contenteditable="true"]');
+    editableElements.forEach(function(element) {
+        element.removeAttribute('contenteditable');
+    });
+
+    var draggableElements = canvasClone.querySelectorAll('[draggable="true"]');
+    draggableElements.forEach(function(element) {
+        element.removeAttribute('draggable');
+    });
+
+    // Remove all trash buttons from the clone
+    var trashButtons = canvasClone.querySelectorAll('.htmleditor-trash-button');
+    trashButtons.forEach(function(button) {
+        button.parentNode.removeChild(button);
+    });
+
+    // Apply the current scoped CSS directly to the clone
+    var styleElement = document.createElement('style');
+    styleElement.type = 'text/css';
+    styleElement.textContent = document.getElementById('css-input').value;
+    canvasClone.prepend(styleElement);
+
+    // Define the canvasHtml and canvasStyles variables after modifications
+        var canvasHtml = canvasClone.innerHTML;
+    var canvasStyles = document.getElementById('css-input').value;
+
+    var htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${title}</title></head><body>${canvasHtml}</body></html>`;
+    var jsonData = JSON.stringify({ title: title, html: canvasHtml, styles: canvasStyles }, null, 2);
+
+    // Use JSZip to create a ZIP file
+    var zip = new JSZip();
+    zip.file(title + ".html", htmlContent);
+    zip.file(title + "-decompressed.json", jsonData);
+
+    // Generate the ZIP file and trigger the download
+    zip.generateAsync({ type: "blob" })
+       .then(function(content) {
+           downloadFile(title + ".zip", content);
+       });
+}
+
+function downloadFile(filename, content) {
+    var element = document.createElement('a');
+    element.href = URL.createObjectURL(content);
+    element.download = filename;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+    </script>
+  </body>
+</html>
