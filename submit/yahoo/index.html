@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="discover pages made by people on the internet.">
+    <meta name="keywords" content="duncap, duncapdev, duncap directory, duncapdirectory, directory, duncap.dev, .dev, dev, submit, internet, explore, pages, people, host pages, host">
+    <meta name="author" content="duncap">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://duncap.dev/">
+    <meta property="og:title" content="duncap directory">
+    <meta property="og:description" content="discover pages made by people on the internet.">
+    <meta property="og:image" content="https://duncap.dev/thumb.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://duncap.dev/">
+    <meta property="twitter:title" content="duncap directory">
+    <meta property="twitter:description" content="discover pages made by people on the internet.">
+    <meta property="twitter:image" content="https://duncap.dev/thumb.png">
+    <title>submit-a-page</title>
+    <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/duncap/duncap.github.io/main/icon.ico"/>
+  </head>
+    <style>
+@font-face {
+  font-family: win95bold;
+  src: url(https://duncap.dev/MSBold.ttf);
+}
+
+@font-face {
+  font-family: win95;
+  src: url(https://duncap.dev/MS.ttf);
+}
+    
+:root {
+    --blue-gradient: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #333 100%) center/cover no-repeat;
+        --lighter-blue: #08216b;
+        --even-lighter-blue: #silver;
+        --lightest-blue: #silver;
+        --logo-blue: black;
+        --light-orange: #08216b;
+        --dark-orange: black;
+        --blood-orange: black;
+}
+
+body {
+   background-color: #007e7e;
+}
+
+inner {
+   border: 2px solid var(--lighter-blue);
+}
+
+button {
+    border-width: 2px;
+    border-style: outset;
+    border-color: buttonface;
+    border-right-color: #424242;
+    border-bottom-color: #424242;
+    background: silver;
+    font-family: win95;
+    color: black;
+    padding: 4px;
+    border-radius: 1px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+input {
+    border-width: 2px;
+    border-style: outset;
+    border-color: buttonface;
+    border-right-color: #424242;
+    border-bottom-color: #424242;
+    background: silver;
+    font-family: win95;
+    color: black;
+    padding: 4px;
+    border-radius: 1px;
+    margin-left: 20px;
+}
+
+nav {
+    font-family: win95;
+    border: solid;
+    border-width: 2px;
+    border-bottom-color: #424242;
+    border-right-color: #424242;
+    border-left-color: #fff;
+    border-top-color: #fff;
+}
+
+nav .top {
+   background: #08216b;
+}
+
+nav .links {
+   background: silver;
+}
+
+nav .links a {
+   text-shadow: 0 0 7px silver;
+   color: black;
+}
+
+h1 {
+  font-family: win95bold;
+}
+
+h2 {
+  font-family: win95bold;
+  margin: 20px;
+}
+
+h3 {
+  font-family: win95bold;
+}
+
+h4 {
+  font-family: win95bold;
+  color: white;
+}
+
+.blog-preview h4 {
+   color: black;
+}
+
+p {
+  font-family: win95;
+  margin-left: 20px;
+}
+
+footer {
+   background: silver;
+   font-family: win95;
+   border: solid;
+   border-width: 2px;
+   border-bottom-color: #424242;
+   border-right-color: #424242;
+   border-left-color: #fff;
+   border-top-color: #fff;
+}
+
+main {
+   margin: 50px;
+   background: silver;
+   font-family: win95;
+   border: solid;
+   border-width: 2px;
+   border-bottom-color: #424242;
+   border-right-color: #424242;
+   border-left-color: #fff;
+   border-top-color: #fff;
+}
+
+label {
+  font-family: win95;
+}
+    </style>
+<script type="text/javascript">
+    window.onload = function() {
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get the page title and author
+            const pageTitle = document.getElementById('pageTitle').value;
+            const author = document.getElementById('author').value;
+
+            // Construct the email body with the author
+            const emailBody = `Author: ${author}`;
+
+            // Construct Yahoo Mail URL with subject and body
+            const email = 'duncapemail@yahoo.com'; // Update with the correct Yahoo email address
+            const yahooUrl = `https://compose.mail.yahoo.com/?to=${email}&subj=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(emailBody)}`;
+
+            // Show the alert
+            alert("Please attach the .html file manually in the opened Yahoo Mail window. (click ok and it'll open the window)");
+
+            // Open the Yahoo Mail URL in a new window after alert is dismissed
+            setTimeout(function() {
+                window.open(yahooUrl, '_blank');
+            }, ); // Delay of 100 milliseconds
+        });
+    };
+</script>
+</head>
+<body>
+    <main>
+        <h2>submit-a-page</h2>
+        <form id="myForm" enctype="multipart/form-data">
+            <label for="pageTitle"><p>page title:</p></label>
+            <input type="text" id="pageTitle" name="pageTitle" required>
+            <label for="author"><p>author:</p></label>
+            <input type="text" id="author" name="author" required>
+            <input type="submit" value="submit">
+        </form>
+        <div id="divider"></div>
+        <p>don't have a file and don't know how to code? (at least html) use <a href="https://duncap.dev/webessence">web essence</a>.</p>
+    </main>
+</body>
+</html>
