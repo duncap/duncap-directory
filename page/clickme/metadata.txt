@@ -1,1 +1,2 @@
-click me by mas
+name:"clickme"
+display:"click me by mas"
