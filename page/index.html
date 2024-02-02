@@ -1,3 +1,10 @@
 <html>
-<meta http-equiv="refresh" content="0; URL=https://duncap.github.io/" />
+<div id="pageContent">Page content will be displayed here.</div>
+<script>async function fetchAndDisplayPageContent() {
+    const queryParams = new URLSearchParams(window.location.search);
+    const pageName = queryParams.get('name');
+
+    if (pageName) {
+        const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/index.html`;
+</script>
 </html>
