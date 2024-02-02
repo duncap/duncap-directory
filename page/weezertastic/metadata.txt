@@ -1,1 +1,2 @@
-weezertastic! by weezertastic
+name:"weezertastic"
+display:"weezertastic! by weezertastic"
