@@ -1,1 +1,2 @@
-noise test by duncap
+name:"noise"
+display:"noise test by duncap"
