@@ -182,14 +182,30 @@ async function fetchAndUpdateFiles() {
     const directories = await fetchDirectories();
     const fileDataPromises = directories.map(async (dir) => {
         const metadataContent = await fetchFileContent(`${dir.path}/metadata.txt`);
-        const buttonName = metadataContent.trim();
-        return fetchCommitData({ ...dir, name: buttonName });
+        // Parse the metadataContent to extract name and display values
+        const metadata = parseMetadata(metadataContent);
+        return fetchCommitData({ ...dir, ...metadata });
     });
 
     files = await Promise.all(fileDataPromises);
     sortAndDisplayButtons();
 }
 
+// Utility function to parse metadata content
+function parseMetadata(metadataContent) {
+    // Initialize default values
+    let name = "", display = "";
+    // Split by lines and process each line
+    metadataContent.split('\n').forEach(line => {
+        if (line.startsWith('name:')) {
+            name = line.split('"')[1]; // Extract value between quotes
+        } else if (line.startsWith('display:')) {
+            display = line.split('"')[1]; // Extract value between quotes
+        }
+    });
+    return { name, display };
+}
+    
 function sortAndDisplayButtons() {
     const sortValue = document.getElementById('sortSelect').value;
     if (sortValue === 'latest') {
