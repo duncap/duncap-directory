@@ -199,7 +199,10 @@ function sortAndDisplayButtons() {
     }
 
     const container = document.getElementById("buttonsContainer");
-    container.innerHTML = files.map(file => `<a href="https://duncap.dev/page?name=${encodeURIComponent(file.name)}"><button>${file.name}</button></a>`).join('');
+    // Use the name for the query parameter and display for the button text
+    container.innerHTML = files.map(file => 
+        `<a href="https://duncap.dev/page?name=${encodeURIComponent(file.name)}"><button>${file.display}</button></a>`
+    ).join('');
 }
 
 window.onload = async () => {
