@@ -161,7 +161,6 @@ let files = [];
 async function fetchCommitData(file) {
     const commitsResponse = await fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`);
     const commits = await commitsResponse.json();
-
     if (commits.length > 0) {
         const latestCommit = new Date(commits[0].commit.committer.date);
         const firstCommit = new Date(commits[commits.length - 1].commit.committer.date);
@@ -182,7 +181,6 @@ async function fetchAndUpdateFiles() {
     const directories = await fetchDirectories();
     const fileDataPromises = directories.map(async (dir) => {
         const metadataContent = await fetchFileContent(`${dir.path}/metadata.txt`);
-        // Parse the metadataContent to extract name and display values
         const metadata = parseMetadata(metadataContent);
         return fetchCommitData({ ...dir, ...metadata });
     });
@@ -191,21 +189,18 @@ async function fetchAndUpdateFiles() {
     sortAndDisplayButtons();
 }
 
-// Utility function to parse metadata content
 function parseMetadata(metadataContent) {
-    // Initialize default values
     let name = "", display = "";
-    // Split by lines and process each line
     metadataContent.split('\n').forEach(line => {
         if (line.startsWith('name:')) {
-            name = line.split('"')[1]; // Extract value between quotes
+            name = line.split('"')[1];
         } else if (line.startsWith('display:')) {
-            display = line.split('"')[1]; // Extract value between quotes
+            display = line.split('"')[1];
         }
     });
     return { name, display };
 }
-    
+
 function sortAndDisplayButtons() {
     const sortValue = document.getElementById('sortSelect').value;
     if (sortValue === 'latest') {
@@ -215,15 +210,35 @@ function sortAndDisplayButtons() {
     }
 
     const container = document.getElementById("buttonsContainer");
-    // Use the name for the query parameter and display for the button text
     container.innerHTML = files.map(file => 
-        `<a href="https://duncap.dev/page#name=${encodeURIComponent(file.name)}"><button>${file.display}</button></a>`
+        `<a href="#name=${encodeURIComponent(file.name)}"><button>${file.display}</button></a>`
     ).join('');
 }
 
+// Fetch and display page content based on the hash
+function fetchAndDisplayPageContentUsingHash() {
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const pageName = hashParams.get('name');
+    if (pageName) {
+        const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/index.html`;
+        fetch(contentUrl)
+            .then(response => response.text())
+            .then(content => {
+                document.getElementById('pageContent').innerHTML = content;
+            })
+            .catch(error => {
+                console.error('Failed to fetch page content:', error);
+                document.getElementById('pageContent').innerHTML = '<p>Page not found or failed to load.</p>';
+            });
+    }
+}
+
+window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
+
 window.onload = async () => {
     await fetchAndUpdateFiles();
-    setInterval(fetchAndUpdateFiles, 3000);
+    fetchAndDisplayPageContentUsingHash(); // Load content if there's a hash when the page loads
+    setInterval(fetchAndUpdateFiles, 3000); // Assuming you still want to periodically update something
 };
 
 function fetchFileContent(path) {
