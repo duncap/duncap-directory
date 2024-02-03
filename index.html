@@ -214,7 +214,19 @@ function sortAndDisplayButtons() {
     ).join('');
 }
 
-// Fetch and display page content based on the hash
+function removeAllStyles() {
+    // Remove all external stylesheets
+    document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+        link.disabled = true; // Disables the stylesheet
+        // link.parentNode.removeChild(link); // Or completely remove the element
+    });
+
+    // Optional: Remove all inline styles
+    document.querySelectorAll('[style]').forEach(elem => {
+        elem.removeAttribute('style');
+    });
+}
+
 function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('name');
@@ -223,7 +235,7 @@ function fetchAndDisplayPageContentUsingHash() {
         fetch(contentUrl)
             .then(response => response.text())
             .then(content => {
-                // Clear the existing content and display only the fetched content
+                removeAllStyles(); // Call this to remove styles before changing the content
                 document.body.innerHTML = content;
             })
             .catch(error => {
