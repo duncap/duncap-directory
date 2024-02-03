@@ -211,7 +211,7 @@ function sortAndDisplayButtons() {
 
     const container = document.getElementById("buttonsContainer");
     container.innerHTML = files.map(file => 
-        `<a href="#name=${encodeURIComponent(file.name)}"><button>${file.display}</button></a>`
+        `<a href="page#name=${encodeURIComponent(file.name)}"><button>${file.display}</button></a>`
     ).join('');
 }
 
