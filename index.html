@@ -215,15 +215,8 @@ function sortAndDisplayButtons() {
 }
 
 function removeAllStyles() {
-    // Remove all external stylesheets
-    document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-        link.disabled = true; // Disables the stylesheet
-        // link.parentNode.removeChild(link); // Or completely remove the element
-    });
-
-    // Optional: Remove all inline styles
-    document.querySelectorAll('[style]').forEach(elem => {
-        elem.removeAttribute('style');
+    document.querySelectorAll('style').forEach(style => {
+        style.parentNode.removeChild(style);
     });
 }
 
