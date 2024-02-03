@@ -19,7 +19,6 @@
     <meta property="twitter:image" content="https://duncap.dev/thumb.png"> 
     <title>duncap directory</title>
     <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/duncap/duncap.github.io/main/icon.ico"/>
-</head>
 <style>
 @font-face {
   font-family: win95bold;
@@ -224,15 +223,16 @@ function fetchAndDisplayPageContentUsingHash() {
         fetch(contentUrl)
             .then(response => response.text())
             .then(content => {
-                document.getElementById('pageContent').innerHTML = content;
+                // Clear the existing content and display only the fetched content
+                document.body.innerHTML = content;
             })
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
-                document.getElementById('pageContent').innerHTML = '<p>Page not found or failed to load.</p>';
+                document.body.innerHTML = '<p>Page not found or failed to load.</p>';
             });
     }
 }
-
+    
 window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
 
 window.onload = async () => {
@@ -245,6 +245,7 @@ function fetchFileContent(path) {
     return fetch(`https://raw.githubusercontent.com/duncap/duncap.github.io/main/${path}`).then(response => response.text());
 }
 </script>
+</head>
 <body>
     <main>
         <h2>duncap directory</h2>
