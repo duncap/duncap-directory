@@ -220,25 +220,6 @@ function removeAllStyles() {
     });
 }
 
-function setupDirectory() {
-    // This function sets up the directory view. Call it to reset the page to its initial state.
-    document.body.innerHTML = `
-        <main>
-            <h2>duncap directory</h2>
-            <p>user-generated pages or some shit (always updating).</p>
-            <a href="https://duncap.dev/submit"><p>submit your page here</p></a>
-            <select id="sortSelect" onchange="sortAndDisplayButtons()">
-                <option value="latest">latest updated</option>
-                <option value="oldest">oldest</option>
-            </select>
-            <div id="buttonsContainer"></div>
-            <div id="pageContent"></div>
-        </main>
-    `;
-    // Assuming fetchAndUpdateFiles is already defined and fetches the directory listing
-    fetchAndUpdateFiles().then(sortAndDisplayButtons);
-}
-
 function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('name');
@@ -247,32 +228,22 @@ function fetchAndDisplayPageContentUsingHash() {
         fetch(contentUrl)
             .then(response => response.text())
             .then(content => {
-                const pageContent = document.getElementById('pageContent');
-                if (pageContent) {
-                    pageContent.innerHTML = content; // Insert content into #pageContent
-                    // Optionally, hide or modify other parts of the page as needed
-                }
+                removeAllStyles(); // Call this to remove styles before changing the content
+                document.body.innerHTML = content;
             })
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
-                document.getElementById('pageContent').innerHTML = '<p>Page not found or failed to load.</p>';
+                document.body.innerHTML = '<p>Page not found or failed to load.</p>';
             });
-    } else {
-        // No page name in hash, setup directory view
-        setupDirectory();
     }
 }
-
+    
 window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
 
-window.onload = () => {
-    if (window.location.hash) {
-        // There's a hash in the URL, attempt to load the specific content
-        fetchAndDisplayPageContentUsingHash();
-    } else {
-        // No hash, display the directory
-        setupDirectory();
-    }
+window.onload = async () => {
+    await fetchAndUpdateFiles();
+    fetchAndDisplayPageContentUsingHash(); // Load content if there's a hash when the page loads
+    setInterval(fetchAndUpdateFiles, 3000); // Assuming you still want to periodically update something
 };
 
 function fetchFileContent(path) {
