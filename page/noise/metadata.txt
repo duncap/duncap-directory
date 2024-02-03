@@ -1,2 +1,0 @@
-name:"noise"
-display:"noise test by duncap"
