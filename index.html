@@ -66,7 +66,7 @@ button {
 }
 
 select {
-    border-width: 2px;  /* Ensure the border thickness is 2px */
+    border-width: 2px; 
     border-style: outset;
     border-color: buttonface;
     border-right-color: #424242;
@@ -75,7 +75,7 @@ select {
     font-family: win95;
     color: black;
     padding: 4px;
-    border-radius: 1px;  /* Match the border-radius with the button */
+    border-radius: 1px;  
     margin-left: 20px;
     margin-bottom: 20px;
     cursor: pointer;
@@ -228,7 +228,7 @@ function fetchAndDisplayPageContentUsingHash() {
         fetch(contentUrl)
             .then(response => response.text())
             .then(content => {
-                removeAllStyles(); // Call this to remove styles before changing the content
+                removeAllStyles();
                 document.body.innerHTML = content;
             })
             .catch(error => {
@@ -242,8 +242,8 @@ window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false
 
 window.onload = async () => {
     await fetchAndUpdateFiles();
-    fetchAndDisplayPageContentUsingHash(); // Load content if there's a hash when the page loads
-    setInterval(fetchAndUpdateFiles, 3000); // Assuming you still want to periodically update something
+    fetchAndDisplayPageContentUsingHash();
+    setInterval(fetchAndUpdateFiles, 3000);
 };
 
 function fetchFileContent(path) {
