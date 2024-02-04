@@ -189,7 +189,7 @@ async function fetchAndUpdateFiles() {
 }
 
 function parseMetadata(metadataContent) {
-    let name = "", display = "";
+    let id = "", display = "";
     metadataContent.split('\n').forEach(line => {
         if (line.startsWith('id:')) {
             id = line.split('"')[1];
