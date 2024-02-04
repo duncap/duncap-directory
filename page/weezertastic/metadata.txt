@@ -1,2 +1,2 @@
-name:"weezertastic"
+id:"weezertastic"
 display:"weezertastic! by weezertastic"
