@@ -1,0 +1,2 @@
+id="oscillator"
+display="oscillator by mas"
