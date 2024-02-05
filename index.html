@@ -222,6 +222,10 @@ function removeAllStyles() {
     });
 }
 
+function onLoad() {
+    // Inside contents so the website doesn't bug out.
+}
+
 function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('id');
@@ -238,6 +242,7 @@ function fetchAndDisplayPageContentUsingHash() {
             .then(content => {
                 if (content) {
                     removeAllStyles();
+                    onLoad();
                     document.body.innerHTML = content;
                 }
             })
