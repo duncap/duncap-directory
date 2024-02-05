@@ -1,0 +1,108 @@
+<head>
+    <title>Oscillator</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+        canvas {
+            display: block; /* Removes the margin at the bottom */
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<canvas id="oscillatorCanvas"></canvas>
+<script>
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const canvas = document.getElementById('oscillatorCanvas');
+    const canvasCtx = canvas.getContext('2d');
+
+    let oscillator = null;
+    let analyser = audioContext.createAnalyser();
+
+    function startOscillator() {
+        oscillator = audioContext.createOscillator();
+        oscillator.type = 'sine';
+
+        analyser.fftSize = 2048;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        oscillator.connect(analyser);
+        analyser.connect(audioContext.destination);
+        oscillator.start();
+
+        draw();
+
+        function draw() {
+            requestAnimationFrame(draw);
+
+            analyser.getByteTimeDomainData(dataArray);
+
+            canvasCtx.fillStyle = 'black';
+            canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = 'white';
+
+            canvasCtx.beginPath();
+
+            let sliceWidth = canvas.width * 1.0 / bufferLength;
+            let x = 0;
+
+            for(let i = 0; i < bufferLength; i++) {
+                let v = dataArray[i] / 128.0;
+                let y = v * canvas.height / 2 + canvas.height / 4;
+
+                if(i === 0) {
+                    canvasCtx.moveTo(x, y);
+                } else {
+                    canvasCtx.lineTo(x, y);
+                }
+
+                x += sliceWidth;
+            }
+
+            canvasCtx.lineTo(canvas.width, canvas.height / 2);
+            canvasCtx.stroke();
+        }
+    }
+
+    function changePitch(e) {
+        if (!oscillator) {
+            startOscillator();
+        }
+
+        const frequency = mapRange(e.clientY, 0, window.innerHeight, 1000, 100);
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+    }
+
+    function mapRange(value, inMin, inMax, outMin, outMax) {
+        return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    }
+
+    window.addEventListener('mousemove', changePitch);
+
+    window.addEventListener('click', function() {
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+    });
+
+    // Resize canvas to fit the window
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight / 2; // Adjust the height as needed
+        canvas.style.marginTop = `${window.innerHeight / 20}px`; // Center vertically
+    }
+    window.onload = resizeCanvas;
+    window.onresize = resizeCanvas;
+</script>
+</body>
