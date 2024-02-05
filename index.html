@@ -235,7 +235,6 @@ function fetchAndDisplayPageContentUsingHash() {
             })
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
-                document.body.innerHTML = '<p>Page not found or failed to load.</p>';
             });
     }
 }
