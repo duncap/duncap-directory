@@ -243,8 +243,15 @@ function fetchAndDisplayPageContentUsingHash() {
                 iframe.style.display = 'block';
                 iframe.style.width = '98%';
                 iframe.style.height = '97%';
-                iframe.srcdoc = htmlContent;
+
+                // Check if the content is "404: Not found"
+                if (htmlContent.trim() === "404: Not Found") {
+                    window.location.href = 'https://duncap.dev/404'; // Redirect to the 404 page
+                } else {
+                    iframe.srcdoc = htmlContent;
+                }
             })
+
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
                 iframe.srcdoc = '';
