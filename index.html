@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -229,38 +229,38 @@ function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('id');
     if (pageName) {
-        // Hide the main content and prepare to show the iframe inside the nav element
+        // Existing logic to fetch and display page content when ID is present
         document.querySelector('main').style.display = 'none';
         const iframe = document.getElementById('dynamicIframe');
         const nav = document.getElementById('dynamicNav');
         
-        // URL for the content to be fetched and displayed in the iframe
         const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
 
         fetch(contentUrl)
             .then(response => response.text())
             .then(htmlContent => {
-                // Make the nav and iframe visible
                 nav.style.display = 'block';
-                iframe.style.display = 'block'; // Make iframe visible
-                iframe.style.width = '98%'; // Adjust size as needed
-                iframe.style.height = '97%'; // Adjust size as needed
-                
-                // Use srcdoc to set the HTML content directly
+                iframe.style.display = 'block';
+                iframe.style.width = '98%';
+                iframe.style.height = '97%';
                 iframe.srcdoc = htmlContent;
             })
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
-                // Handle the error (e.g., by showing some default error message or content)
+                iframe.srcdoc = '';
             });
     } else {
-        // If no specific page is requested, revert to the original main content display
+        // If no specific page is requested (i.e., no ID in URL), clear the iframe's srcdoc attribute
+        const iframe = document.getElementById('dynamicIframe');
+        iframe.srcdoc = ''; // Clear the iframe content
         document.querySelector('main').style.display = 'block';
         document.getElementById('dynamicNav').style.display = 'none';
     }
 }
-    
+
+// Ensure this function runs both on initial page load and when the URL hash changes
 window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
+window.onload = fetchAndDisplayPageContentUsingHash;
 
 window.onload = async () => {
     await fetchAndUpdateFiles();
@@ -289,4 +289,3 @@ function fetchFileContent(path) {
         <iframe id="dynamicIframe" style="background-color:#fff; margin: 10px;"></iframe>
     </nav>
 </body>
-</html>
