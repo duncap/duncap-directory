@@ -229,26 +229,34 @@ function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('id');
     if (pageName) {
+        // Hide the main content and prepare to show the iframe inside the nav element
+        document.querySelector('main').style.display = 'none';
+        const iframe = document.getElementById('dynamicIframe');
+        const nav = document.getElementById('dynamicNav');
+        
+        // URL for the content to be fetched and displayed in the iframe
         const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
+
         fetch(contentUrl)
-            .then(response => {
-                if (!response.ok && response.status === 404) {
-                    window.location.href = 'https://duncap.dev/404';
-                } else {
-                    return response.text();
-                }
-            })
-            .then(content => {
-                if (content) {
-                    removeAllStyles();
-                    onLoad();
-                    document.body.innerHTML = content;
-                }
+            .then(response => response.text())
+            .then(htmlContent => {
+                // Make the nav and iframe visible
+                nav.style.display = 'block';
+                iframe.style.display = 'block'; // Make iframe visible
+                iframe.style.width = '98%'; // Adjust size as needed
+                iframe.style.height = '97%'; // Adjust size as needed
+                
+                // Use srcdoc to set the HTML content directly
+                iframe.srcdoc = htmlContent;
             })
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
-                window.location.href = 'https://duncap.dev/404';
+                // Handle the error (e.g., by showing some default error message or content)
             });
+    } else {
+        // If no specific page is requested, revert to the original main content display
+        document.querySelector('main').style.display = 'block';
+        document.getElementById('dynamicNav').style.display = 'none';
     }
 }
     
@@ -276,7 +284,9 @@ function fetchFileContent(path) {
             <option value="oldest">oldest</option>
         </select>
         <div id="buttonsContainer"></div>
-        <div id="pageContent"></div>
     </main>
+    <nav id="dynamicNav" style="background-color: silver;">
+        <iframe id="dynamicIframe" style="background-color:#fff; margin: 10px;"></iframe>
+    </nav>
 </body>
 </html>
