@@ -243,7 +243,7 @@ function fetchAndDisplayPageContentUsingHash() {
                 if (content) {
                     removeAllStyles();
                     onLoad();
-                    document.main.innerHTML = content;
+                    document.body.innerHTML = content;
                 }
             })
             .catch(error => {
