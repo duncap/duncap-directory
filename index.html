@@ -228,13 +228,22 @@ function fetchAndDisplayPageContentUsingHash() {
     if (pageName) {
         const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
         fetch(contentUrl)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok && response.status === 404) {
+                    window.location.href = 'https://duncap.dev/404';
+                } else {
+                    return response.text();
+                }
+            })
             .then(content => {
-                removeAllStyles();
-                document.body.innerHTML = content;
+                if (content) {
+                    removeAllStyles();
+                    document.body.innerHTML = content;
+                }
             })
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
+                window.location.href = 'https://duncap.dev/404';
             });
     }
 }
