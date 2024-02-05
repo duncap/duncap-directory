@@ -1,2 +1,2 @@
 id:"oscillator"
-display:"Oscillator by mas"
+display:"oscillator by mas"
