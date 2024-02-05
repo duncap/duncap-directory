@@ -90,6 +90,15 @@ nav {
     border-top-color: #fff;
 }
 
+#dynamicIframe {
+        background-color: #fff;
+        display: block; /* Ensure it's a block-level element */
+        width: calc(100% - 40px); /* 100% minus 40px for both margins */
+        height: 97%; /* Adjusted if necessary, based on your layout */
+        margin: 10px auto; /* 10px top and bottom, auto for left and right margins */
+        border: none; /* Assuming you don't want a border; adjust as needed */
+}
+
 nav .top {
    background: #08216b;
 }
@@ -293,7 +302,7 @@ function fetchFileContent(path) {
         <div id="buttonsContainer"></div>
     </main>
     <nav id="dynamicNav" style="background-color: silver;">
-        <iframe id="dynamicIframe" style="background-color:#fff; margin: 10px;"></iframe>
+        <iframe id="dynamicIframe"></iframe>
     </nav>
 </body>
 </html>
