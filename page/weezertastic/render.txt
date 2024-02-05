@@ -1,4 +1,5 @@
-    <title>weezertastic!1!!</title>
+<!DOCTYPE html><html lang="en">
+<title>weezertastic!1!!</title>
     <style>
         body {
           background-color: #000;
@@ -7,3 +8,4 @@
     </style>
     <link rel="shortcut icon" type="image/jpg" href="https://github.com/duncap/duncap.github.io/raw/main/page/weezertastic/download.ico"/>><img src="https://github.com/duncap/funnimancorp/blob/main/tenor_gif6659509238990036595_107109782741953.gif?raw=true" style="width: 100%; height: 100vh;">
     <audio autoplay="true" src="https://github.com/duncap/funnimancorp/raw/main/buddy-holly-weezer-made-with-Voicemod.mp3">
+</html>
