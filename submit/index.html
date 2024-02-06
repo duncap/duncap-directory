@@ -157,49 +157,22 @@ main {
 label {
   font-family: win95;
 }
-    </style>
-    <script type="text/javascript">
-        window.onload = function() {
-            document.getElementById('myForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Get the page title and author
-                const pageTitle = document.getElementById('pageTitle').value;
-                const author = document.getElementById('author').value;
-
-                // Construct the email body with the author
-                const emailBody = `Author: ${author}`;
-
-                // Construct Gmail URL with subject and body
-                const email = 'duncapemail@gmail.com';
-                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(emailBody)}`;
-
-                // Show the alert
-                alert("Please attach the .html file manually in the opened Gmail window. (click ok and it'll open the window)");
-
-                // Open the Gmail URL in a new window after alert is dismissed
-                setTimeout(function() {
-                    window.open(gmailUrl, '_blank');
-                }, ); // Delay of 100 milliseconds
-            });
-        };
-    </script>
+</style>
 <body>
     <main>
         <h2>submit-a-page</h2>
-        <form id="myForm" name="submit-page" method="POST" data-netlify="true" enctype="multipart/form-data">
-    <label for="pageTitle"><p>page title:</p></label>
-    <input type="text" id="pageTitle" name="pageTitle" required>
+        <form id="myForm" name="submit-page" method="POST" data-netlify="true" enctype="multipart/form-data" action="https://duncap.dev">
+            <label for="pageTitle"><p>page title:</p></label>
+            <input type="text" id="pageTitle" name="pageTitle" required>
     
-    <label for="author"><p>author:</p></label>
-    <input type="text" id="author" name="author" required>
-            
-    <label for="fileUpload"><p>page file:</p></label>
-    <input type="file" id="fileUpload" name="fileUpload" accept=".html" required>
+            <label for="author"><p>author:</p></label>
+            <input type="text" id="author" name="author" required>
     
-    <input type="submit" value="submit">
-</form>
-
+            <label for="fileUpload"><p>page file:</p></label>
+            <input type="file" id="fileUpload" name="fileUpload" accept=".html" required>
+    
+            <input type="submit" value="submit">
+        </form>
         <div id="divider"></div>
         <p>don't have a file and don't know how to code? (at least html) use <a href="https://duncap.dev/webessence">web essence</a>.</p>
     </main>
