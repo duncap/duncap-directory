@@ -381,7 +381,18 @@ function exitHandler() {
 }
 
 function redirectToHomepage() {
-    window.location.href = '/';
+    // Hide the dynamicNav, effectively closing the miniplayer
+    const nav = document.getElementById('dynamicNav');
+    nav.classList.remove('visible');
+    nav.classList.remove('miniplayer'); // Ensure miniplayer mode is exited
+
+    // Clear the iframe to remove the currently displayed page
+    const iframe = document.getElementById('dynamicIframe');
+    iframe.srcdoc = '';
+
+    // Show the main content
+    const mainContent = document.querySelector('main');
+    mainContent.style.display = 'block';
 }
 
 function turnMini() {
