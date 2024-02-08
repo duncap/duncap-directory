@@ -94,7 +94,7 @@ nav {
         background-color: #fff;
         display: block; /* Ensure it's a block-level element */
         width: calc(100% - 40px); /* 100% minus 40px for both margins */
-        height: 97%; /* Adjusted if necessary, based on your layout */
+        height: 93.4%; /* Adjusted if necessary, based on your layout */
         margin: 10px auto; /* 10px top and bottom, auto for left and right margins */
         border: none; /* Assuming you don't want a border; adjust as needed */
 }
@@ -251,7 +251,7 @@ function fetchAndDisplayPageContentUsingHash() {
                 nav.style.display = 'block';
                 iframe.style.display = 'block';
                 iframe.style.width = '98%';
-                iframe.style.height = '97%';
+                iframe.style.height = '93.4%';
 
                 // Check if the content is "404: Not found"
                 if (htmlContent.trim() === "404: Not Found") {
@@ -284,6 +284,63 @@ window.onload = async () => {
     setInterval(fetchAndUpdateFiles, 3000);
 };
 
+function toggleFullscreen() {
+    const iframe = document.getElementById('dynamicIframe');
+    const nav = document.getElementById('dynamicNav');
+    if (!document.fullscreenElement) {
+        if (nav.requestFullscreen) {
+            nav.requestFullscreen();
+        } else if (nav.mozRequestFullScreen) { /* Firefox */
+            nav.mozRequestFullScreen();
+        } else if (nav.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            nav.webkitRequestFullscreen();
+        } else if (nav.msRequestFullscreen) { /* IE/Edge */
+            nav.msRequestFullscreen();
+        }
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        nav.style.border = 'none'; // Remove nav border
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
+        }
+        // Revert to the original styles
+        iframe.style.width = 'calc(100% - 40px)';
+        iframe.style.height = '93.4%';
+        nav.style.border = 'solid'; // Add the border back
+    }
+}
+
+document.getElementById('toggleFullscreen').addEventListener('click', toggleFullscreen);
+
+// Adjust fullscreen change handling for different browsers
+document.addEventListener('fullscreenchange', exitHandler);
+document.addEventListener('webkitfullscreenchange', exitHandler);
+document.addEventListener('mozfullscreenchange', exitHandler);
+document.addEventListener('MSFullscreenChange', exitHandler);
+
+function exitHandler() {
+    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+        // Exited fullscreen mode
+        const iframe = document.getElementById('dynamicIframe');
+        const nav = document.getElementById('dynamicNav');
+        // Revert styles to their original state
+        iframe.style.width = 'calc(100% - 40px)';
+        iframe.style.height = '93.4%';
+        nav.style.border = 'solid'; // Add the border back
+    }
+}
+
+function redirectToHomepage() {
+    window.location.href = '/';
+}
+
 function fetchFileContent(path) {
     return fetch(`https://raw.githubusercontent.com/duncap/duncap.github.io/main/${path}`).then(response => response.text());
 }
@@ -301,8 +358,13 @@ function fetchFileContent(path) {
         </select>
         <div id="buttonsContainer"></div>
     </main>
-    <nav id="dynamicNav" style="background-color: silver;">
+    <div id="dynamicNav">
+    <nav style="background-color: #010080; height: 3.5%; display: flex; align-items: center;justify-content: flex-start;">
+        <button onclick="redirectToHomepage()" style="width: 25px; height: 25px; margin: 0; margin-left: 15px; padding: 0;">X</button>
+    </nav>
+    <nav style="background-color: silver;">
         <iframe id="dynamicIframe"></iframe>
     </nav>
+    </div>
 </body>
 </html>
