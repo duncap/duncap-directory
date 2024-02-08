@@ -276,7 +276,7 @@ function fetchAndDisplayPageContentUsingHash() {
         document.querySelector('main').style.display = 'none';
         const iframe = document.getElementById('dynamicIframe');
         const nav = document.getElementById('dynamicNav');
-        
+
         const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
 
         fetch(contentUrl)
@@ -291,9 +291,10 @@ function fetchAndDisplayPageContentUsingHash() {
                 } else {
                     iframe.srcdoc = htmlContent;
                     if (nav.classList.contains('miniplayer')) {
-                    turnMini(); // This call will exit mini mode
+                        turnMini(); // This call will exit mini mode
+                    }
                 }
-            }
+            }) // This closing parenthesis was missing
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
                 iframe.srcdoc = '';
