@@ -271,14 +271,19 @@ function fetchAndDisplayPageContentUsingHash() {
     const iframe = document.getElementById('dynamicIframe');
     const nav = document.getElementById('dynamicNav');
 
+    // Always try to hide nav unless in miniplayer mode and content is being loaded
+    if (!nav.classList.contains('miniplayer') || !pageName) {
+        mainContent.style.display = 'block'; // Show main content by default
+    }
+
     if (window.location.hash) {
         showNav();
-        // Hide the main content immediately if not in miniplayer mode
         if (!nav.classList.contains('miniplayer')) {
-            mainContent.style.display = 'none';
+            mainContent.style.display = 'none'; // Hide main content if not in miniplayer mode
         }
     } else {
         hideNav();
+        mainContent.style.display = 'block';
     }
 
     if (pageName) {
@@ -295,12 +300,13 @@ function fetchAndDisplayPageContentUsingHash() {
                     window.location.href = 'https://duncap.dev/404';
                 } else {
                     iframe.srcdoc = htmlContent;
-                    // Hide the main content after loading if in miniplayer mode
                     if (nav.classList.contains('miniplayer')) {
+                        // In miniplayer mode, hide the main content once content is successfully loaded
                         mainContent.style.display = 'none';
-                        turnMini(); // Adjust as needed; currently, this toggles miniplayer mode
-                    } else {
-                        // If not in miniplayer mode, the main content should already be hidden
+                    }
+                    // Exit miniplayer mode when new page content is loaded
+                    if (nav.classList.contains('miniplayer')) {
+                        turnMini();
                     }
                 }
             })
@@ -310,7 +316,6 @@ function fetchAndDisplayPageContentUsingHash() {
             });
     } else {
         iframe.srcdoc = ''; // Clear the iframe content
-        mainContent.style.display = 'block'; // Show the main content
         document.getElementById('dynamicNav').style.display = 'none';
     }
 }
