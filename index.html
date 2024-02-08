@@ -267,16 +267,21 @@ function onLoad() {
 function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('id');
+    const mainContent = document.querySelector('main');
+    const iframe = document.getElementById('dynamicIframe');
+    const nav = document.getElementById('dynamicNav');
+
     if (window.location.hash) {
         showNav();
+        // Hide the main content immediately if not in miniplayer mode
+        if (!nav.classList.contains('miniplayer')) {
+            mainContent.style.display = 'none';
+        }
     } else {
         hideNav();
     }
-    if (pageName) {
-        document.querySelector('main').style.display = 'none';
-        const iframe = document.getElementById('dynamicIframe');
-        const nav = document.getElementById('dynamicNav');
 
+    if (pageName) {
         const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
 
         fetch(contentUrl)
@@ -290,19 +295,22 @@ function fetchAndDisplayPageContentUsingHash() {
                     window.location.href = 'https://duncap.dev/404';
                 } else {
                     iframe.srcdoc = htmlContent;
+                    // Hide the main content after loading if in miniplayer mode
                     if (nav.classList.contains('miniplayer')) {
-                        turnMini(); // This call will exit mini mode
+                        mainContent.style.display = 'none';
+                        turnMini(); // Adjust as needed; currently, this toggles miniplayer mode
+                    } else {
+                        // If not in miniplayer mode, the main content should already be hidden
                     }
                 }
-            }) // This closing parenthesis was missing
+            })
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
                 iframe.srcdoc = '';
             });
     } else {
-        const iframe = document.getElementById('dynamicIframe');
         iframe.srcdoc = ''; // Clear the iframe content
-        document.querySelector('main').style.display = 'block';
+        mainContent.style.display = 'block'; // Show the main content
         document.getElementById('dynamicNav').style.display = 'none';
     }
 }
