@@ -50,10 +50,10 @@ inner {
 }
 
 #dynamicNav {
-    transform: translateX(-150%); /* Moves the nav bar up and out of the viewport */
+    transform: translateX(-150%);
 }
 #dynamicNav.visible {
-    transform: translateX(0%); /* Moves the nav bar back to its original position */
+    transform: translateX(0%); 
 }
 
 
@@ -100,11 +100,19 @@ nav {
 
 #dynamicIframe {
         background-color: #fff;
-        display: block; /* Ensure it's a block-level element */
-        width: calc(100% - 40px); /* 100% minus 40px for both margins */
-        height: 93.4%; /* Adjusted if necessary, based on your layout */
-        margin: 10px auto; /* 10px top and bottom, auto for left and right margins */
-        border: none; /* Assuming you don't want a border; adjust as needed */
+        display: block; 
+        width: calc(100% - 40px);
+        height: 93.4%;
+        margin: 10px auto;
+        border: none;
+}
+
+#dynamicNav.miniplayer {
+    position: fixed; /* Make the miniplayer float above the content */
+    bottom: 20px; /* Distance from bottom */
+    right: 20px; /* Distance from right */
+    z-index: 1000; /* Ensure it's above other content */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Optional: Add shadow for better visibility */
 }
 
 nav .top {
@@ -158,6 +166,19 @@ footer {
    border-top-color: #fff;
 }
 
+#windowControls {
+    height: 32px; /* Fixed height for window controls */
+    background-color: #919191;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#dynamicNav.miniplayer #windowControls {
+    /* This ensures that even in miniplayer mode, the window controls maintain their height and width */
+    height: 32px;
+}
+
 main {
    margin: 50px;
    background: silver;
@@ -169,6 +190,7 @@ main {
    border-left-color: #fff;
    border-top-color: #fff;
 }
+
 </style>
 <script>
 let files = [];
@@ -265,9 +287,8 @@ function fetchAndDisplayPageContentUsingHash() {
                 iframe.style.width = '98%';
                 iframe.style.height = '93.4%';
 
-                // Check if the content is "404: Not found"
                 if (htmlContent.trim() === "404: Not Found") {
-                    window.location.href = 'https://duncap.dev/404'; // Redirect to the 404 page
+                    window.location.href = 'https://duncap.dev/404';
                 } else {
                     iframe.srcdoc = htmlContent;
                 }
@@ -278,7 +299,6 @@ function fetchAndDisplayPageContentUsingHash() {
                 iframe.srcdoc = '';
             });
     } else {
-        // If no specific page is requested (i.e., no ID in URL), clear the iframe's srcdoc attribute
         const iframe = document.getElementById('dynamicIframe');
         iframe.srcdoc = ''; // Clear the iframe content
         document.querySelector('main').style.display = 'block';
@@ -286,23 +306,22 @@ function fetchAndDisplayPageContentUsingHash() {
     }
 }
 
-// Ensure this function runs both on initial page load and when the URL hash changes
 window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
 window.onload = fetchAndDisplayPageContentUsingHash;
 
 
 function showNav() {
     const nav = document.getElementById('dynamicNav');
-    nav.classList.add('visible'); // This class should have the CSS to bring the nav on-screen.
+    nav.classList.add('visible');
 }
 
 function hideNav() {
     const nav = document.getElementById('dynamicNav');
-    nav.classList.remove('visible'); // Removes the class, moving the nav off-screen.
+    nav.classList.remove('visible');
 }
 
 window.onload = async () => {
-    hideNav(); // Ensure nav is hidden by default.
+    hideNav(); 
     await fetchAndUpdateFiles();
     fetchAndDisplayPageContentUsingHash();
     setInterval(fetchAndUpdateFiles, 3000);
@@ -314,30 +333,30 @@ function toggleFullscreen() {
     if (!document.fullscreenElement) {
         if (nav.requestFullscreen) {
             nav.requestFullscreen();
-        } else if (nav.mozRequestFullScreen) { /* Firefox */
+        } else if (nav.mozRequestFullScreen) {
             nav.mozRequestFullScreen();
-        } else if (nav.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+        } else if (nav.webkitRequestFullscreen) { 
             nav.webkitRequestFullscreen();
-        } else if (nav.msRequestFullscreen) { /* IE/Edge */
+        } else if (nav.msRequestFullscreen) {
             nav.msRequestFullscreen();
         }
         iframe.style.width = '100%';
         iframe.style.height = '100%';
-        nav.style.border = 'none'; // Remove nav border
+        nav.style.border = 'none'; 
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) { /* Firefox */
+        } else if (document.mozCancelFullScreen) {
             document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE/Edge */
+        } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
         }
         // Revert to the original styles
         iframe.style.width = 'calc(100% - 40px)';
         iframe.style.height = '93.4%';
-        nav.style.border = 'solid'; // Add the border back
+        nav.style.border = 'solid';
     }
 }
 
@@ -357,12 +376,38 @@ function exitHandler() {
         // Revert styles to their original state
         iframe.style.width = 'calc(100% - 40px)';
         iframe.style.height = '93.4%';
-        nav.style.border = 'solid'; // Add the border back
+        nav.style.border = 'solid';
     }
 }
 
 function redirectToHomepage() {
     window.location.href = '/';
+}
+
+function turnMini() {
+    const nav = document.getElementById('dynamicNav');
+    const iframe = document.getElementById('dynamicIframe');
+    const mainContent = document.querySelector('main'); // Select the main content
+
+    nav.classList.toggle('miniplayer');
+
+    if (nav.classList.contains('miniplayer')) {
+        // Miniplayer mode activated
+        nav.style.width = '300px'; // Miniplayer width
+        nav.style.height = 'calc(32px + 20%)'; // Adjusted for windowControls height
+        iframe.style.width = '100%'; // iframe fills the width
+        iframe.style.height = 'calc(90% - 32px)'; // Adjusted for windowControls height
+
+        mainContent.style.display = 'block'; // Show the homepage content
+    } else {
+        // Revert back to full mode
+        nav.style.width = '100%'; // Reset to original width
+        nav.style.height = 'auto'; // Allow height to adjust automatically
+        iframe.style.width = 'calc(100% - 40px)'; // Reset iframe width if necessary
+        iframe.style.height = '93.4%'; // Reset iframe height to original
+
+        mainContent.style.display = 'none'; // Hide the homepage content
+    }
 }
 
 function fetchFileContent(path) {
@@ -383,8 +428,9 @@ function fetchFileContent(path) {
         <div id="buttonsContainer"></div>
     </main>
     <div id="dynamicNav">
-    <nav style="background-color: #919191; height: 3.5%; display: flex; align-items: center;justify-content: flex-start;">
+    <nav id="windowControls" style="background-color: #919191; display: flex; align-items: center;justify-content: flex-start;">
         <button onclick="redirectToHomepage()" style="width: 25px; height: 25px; margin: 0; margin-left: 15px; padding: 0;">x</button>
+        <button onclick="turnMini()" style="width: 25px; height: 25px; margin: 0; margin-left: 5px; padding: 0;">-</button>
     </nav>
     <nav style="background-color: silver;">
         <iframe id="dynamicIframe"></iframe>
