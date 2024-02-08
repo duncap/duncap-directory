@@ -49,6 +49,14 @@ inner {
    border: 2px solid var(--lighter-blue);
 }
 
+#dynamicNav {
+    transform: translateX(-100%); /* Moves the nav bar up and out of the viewport */
+}
+#dynamicNav.visible {
+    transform: translateX(0%); /* Moves the nav bar back to its original position */
+}
+
+
 button {
     border-width: 2px;
     border-style: outset;
@@ -237,8 +245,12 @@ function onLoad() {
 function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('id');
+    if (window.location.hash) {
+        showNav();
+    } else {
+        hideNav();
+    }
     if (pageName) {
-        // Existing logic to fetch and display page content when ID is present
         document.querySelector('main').style.display = 'none';
         const iframe = document.getElementById('dynamicIframe');
         const nav = document.getElementById('dynamicNav');
@@ -278,7 +290,19 @@ function fetchAndDisplayPageContentUsingHash() {
 window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
 window.onload = fetchAndDisplayPageContentUsingHash;
 
+
+function showNav() {
+    const nav = document.getElementById('dynamicNav');
+    nav.classList.add('visible'); // This class should have the CSS to bring the nav on-screen.
+}
+
+function hideNav() {
+    const nav = document.getElementById('dynamicNav');
+    nav.classList.remove('visible'); // Removes the class, moving the nav off-screen.
+}
+
 window.onload = async () => {
+    hideNav(); // Ensure nav is hidden by default.
     await fetchAndUpdateFiles();
     fetchAndDisplayPageContentUsingHash();
     setInterval(fetchAndUpdateFiles, 3000);
