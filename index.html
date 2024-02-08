@@ -293,8 +293,7 @@ function fetchAndDisplayPageContentUsingHash() {
                     if (nav.classList.contains('miniplayer')) {
                     turnMini(); // This call will exit mini mode
                 }
-            })
-
+            }
             .catch(error => {
                 console.error('Failed to fetch page content:', error);
                 iframe.srcdoc = '';
