@@ -198,6 +198,9 @@ let files = [];
 function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('id');
+    const iframe = document.getElementById('dynamicIframe');
+    const nav = document.getElementById('dynamicNav');
+    const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
     if (window.location.hash) {
         document.querySelector('main').style.display = 'none';
         showNav();
@@ -211,10 +214,6 @@ function fetchAndDisplayPageContentUsingHash() {
         hideNav();
     }
     if (pageName) {
-        const iframe = document.getElementById('dynamicIframe');
-        const nav = document.getElementById('dynamicNav');
-        const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
-
         fetch(contentUrl)
             .then(response => response.text())
             .then(htmlContent => {
