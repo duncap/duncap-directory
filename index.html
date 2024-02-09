@@ -204,7 +204,6 @@ function fetchAndDisplayPageContentUsingHash() {
         hideNav();
     }
     if (pageName) {
-        document.querySelector('main').style.display = 'none';
         const iframe = document.getElementById('dynamicIframe');
         const nav = document.getElementById('dynamicNav');
         
@@ -222,6 +221,10 @@ function fetchAndDisplayPageContentUsingHash() {
                     window.location.href = 'https://duncap.dev/404';
                 } else {
                     iframe.srcdoc = htmlContent;
+                    document.querySelector('main').style.display = 'none';
+                    if (nav.classList.contains('miniplayer')) {
+                        turnMini();
+                    }
                 }
             })
 
