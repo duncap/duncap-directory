@@ -209,10 +209,12 @@ function fetchAndDisplayPageContentUsingHash() {
         nav.style.height = 'auto';
         const iframe = document.getElementById('dynamicIframe');
         iframe.style.width = 'calc(100% - 40px)';
+        iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
         iframe.style.height = '93.4%';
     } else {
         hideNav();
     }
+    
     if (pageName) {
         fetch(contentUrl)
             .then(response => response.text())
@@ -222,6 +224,7 @@ function fetchAndDisplayPageContentUsingHash() {
                 }
                 nav.style.display = 'block';
                 iframe.style.display = 'block';
+                iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
                 iframe.style.width = '98%';
                 iframe.style.height = '93.4%';
 
@@ -382,6 +385,7 @@ function exitHandler() {
         // Revert styles to their original state
         iframe.style.width = 'calc(100% - 40px)';
         iframe.style.height = '93.4%';
+        iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
         nav.style.border = 'solid';
     }
 }
@@ -415,9 +419,10 @@ function turnMini() {
         // Miniplayer mode activated
         nav.style.width = '300px'; // Miniplayer width
         nav.style.height = 'calc(32px + 20%)'; // Adjusted for windowControls height
-        iframe.style.width = '100%'; // iframe fills the width
-        iframe.style.height = 'calc(90% - 32px)'; // Adjusted for windowControls height
-
+        iframe.style.width = '200%'; // Double the width before scaling down to simulate zoom out
+        iframe.style.height = 'calc(180% - 32px)'; // Double the height before scaling
+        iframe.style.transform = 'scale(0.5)'; // Scale down to 50%
+        iframe.style.transformOrigin = 'top left'; // Ensure the scaling doesn't offset the content
         mainContent.style.display = 'block'; // Show the homepage content
     } else {
         // Revert back to full mode
@@ -425,8 +430,9 @@ function turnMini() {
         nav.style.width = '100%'; // Reset to original width
         nav.style.height = 'auto'; // Allow height to adjust automatically
         iframe.style.width = 'calc(100% - 40px)'; // Reset iframe width if necessary
+        iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
         iframe.style.height = '93.4%'; // Reset iframe height to original
-
+        iframe.style.transform = 'scale(1)'; // Reset scaling to 100%
     }
 }
 
