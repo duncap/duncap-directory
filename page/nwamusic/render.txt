@@ -49,7 +49,7 @@
         <h1 style="font-family: Mistral; margin: 50px; font-size: 50px; color: red; text-shadow: 2px 2px #FFF;">N.W.A Moosic</h1>
         <div class="container">
             <p class="text">Made by</p>
-            <a href="https://soundcloud.com/lil-2pac-467829763/respect-da-coast" class="text"><p>lil2pac</p></a>
+            <a href="https://soundcloud.com/lil-2pac-467829763/respect-da-coast" class="text" target="_blank"><p>lil2pac</p></a>
         </div>
         <div class="image-container">
             <img src="https://m.media-amazon.com/images/I/914gSg0S0OL._UF1000,1000_QL80_.jpg" style="width: 150px; height: 150px; margin: 0;">
