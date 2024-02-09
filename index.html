@@ -206,13 +206,12 @@ function fetchAndDisplayPageContentUsingHash() {
     if (pageName) {
         const iframe = document.getElementById('dynamicIframe');
         const nav = document.getElementById('dynamicNav');
-        const mainContent = document.getElementById('mainContent');
         const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
 
         fetch(contentUrl)
             .then(response => response.text())
             .then(htmlContent => {
-                mainContent.style.display = 'none'; // Hide the homepage content
+                document.querySelector('main').style.display = 'none';
                 if (nav.classList.contains('miniplayer')) {
                         turnMini();
                 }
