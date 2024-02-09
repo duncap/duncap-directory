@@ -199,7 +199,14 @@ function fetchAndDisplayPageContentUsingHash() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     const pageName = hashParams.get('id');
     if (window.location.hash) {
+        document.querySelector('main').style.display = 'none';
         showNav();
+        nav.classList.remove('miniplayer');
+        nav.style.width = '100%';
+        nav.style.height = 'auto';
+        const iframe = document.getElementById('dynamicIframe');
+        iframe.style.width = 'calc(100% - 40px)';
+        iframe.style.height = '93.4%';
     } else {
         hideNav();
     }
@@ -211,7 +218,6 @@ function fetchAndDisplayPageContentUsingHash() {
         fetch(contentUrl)
             .then(response => response.text())
             .then(htmlContent => {
-                document.querySelector('main').style.display = 'none';
                 if (nav.classList.contains('miniplayer')) {
                         turnMini();
                 }
