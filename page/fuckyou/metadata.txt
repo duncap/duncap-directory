@@ -1,0 +1,2 @@
+id:"fuckyou"
+display:"fuck you by go fuck yourself"
