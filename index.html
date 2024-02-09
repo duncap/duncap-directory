@@ -195,6 +195,51 @@ main {
 <script>
 let files = [];
 
+function fetchAndDisplayPageContentUsingHash() {
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const pageName = hashParams.get('id');
+    if (window.location.hash) {
+        showNav();
+    } else {
+        hideNav();
+    }
+    if (pageName) {
+        document.querySelector('main').style.display = 'none';
+        const iframe = document.getElementById('dynamicIframe');
+        const nav = document.getElementById('dynamicNav');
+        
+        const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
+
+        fetch(contentUrl)
+            .then(response => response.text())
+            .then(htmlContent => {
+                nav.style.display = 'block';
+                iframe.style.display = 'block';
+                iframe.style.width = '98%';
+                iframe.style.height = '93.4%';
+
+                if (htmlContent.trim() === "404: Not Found") {
+                    window.location.href = 'https://duncap.dev/404';
+                } else {
+                    iframe.srcdoc = htmlContent;
+                }
+            })
+
+            .catch(error => {
+                console.error('Failed to fetch page content:', error);
+                iframe.srcdoc = '';
+            });
+    } else {
+        const iframe = document.getElementById('dynamicIframe');
+        iframe.srcdoc = ''; // Clear the iframe content
+        document.querySelector('main').style.display = 'block';
+        document.getElementById('dynamicNav').style.display = 'none';
+    }
+}
+
+window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
+window.onload = fetchAndDisplayPageContentUsingHash;
+
 async function fetchCommitData(file) {
     const commitsResponse = await fetch(`https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`);
     const commits = await commitsResponse.json();
@@ -263,52 +308,6 @@ function removeAllStyles() {
 function onLoad() {
     // Inside contents so the website doesn't bug out.
 }
-
-function fetchAndDisplayPageContentUsingHash() {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    const pageName = hashParams.get('id');
-    if (window.location.hash) {
-        showNav();
-    } else {
-        hideNav();
-    }
-    if (pageName) {
-        document.querySelector('main').style.display = 'none';
-        const iframe = document.getElementById('dynamicIframe');
-        const nav = document.getElementById('dynamicNav');
-        
-        const contentUrl = `https://raw.githubusercontent.com/duncap/duncap.github.io/main/page/${encodeURIComponent(pageName)}/render.txt`;
-
-        fetch(contentUrl)
-            .then(response => response.text())
-            .then(htmlContent => {
-                nav.style.display = 'block';
-                iframe.style.display = 'block';
-                iframe.style.width = '98%';
-                iframe.style.height = '93.4%';
-
-                if (htmlContent.trim() === "404: Not Found") {
-                    window.location.href = 'https://duncap.dev/404';
-                } else {
-                    iframe.srcdoc = htmlContent;
-                }
-            })
-
-            .catch(error => {
-                console.error('Failed to fetch page content:', error);
-                iframe.srcdoc = '';
-            });
-    } else {
-        const iframe = document.getElementById('dynamicIframe');
-        iframe.srcdoc = ''; // Clear the iframe content
-        document.querySelector('main').style.display = 'block';
-        document.getElementById('dynamicNav').style.display = 'none';
-    }
-}
-
-window.addEventListener('hashchange', fetchAndDisplayPageContentUsingHash, false);
-window.onload = fetchAndDisplayPageContentUsingHash;
-
 
 function showNav() {
     const nav = document.getElementById('dynamicNav');
