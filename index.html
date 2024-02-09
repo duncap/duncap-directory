@@ -395,6 +395,9 @@ function redirectToHomepage() {
     // Show the main content
     const mainContent = document.querySelector('main');
     mainContent.style.display = 'block';
+    if (nav.classList.contains('miniplayer')) {
+        turnMini();
+    }
 }
 
 function turnMini() {
