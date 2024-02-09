@@ -212,6 +212,7 @@ function fetchAndDisplayPageContentUsingHash() {
         fetch(contentUrl)
             .then(response => response.text())
             .then(htmlContent => {
+                mainContent.style.display = 'none'; // Hide the homepage content
                 if (nav.classList.contains('miniplayer')) {
                         turnMini();
                 }
