@@ -215,7 +215,6 @@ function fetchAndDisplayPageContentUsingHash() {
                 if (nav.classList.contains('miniplayer')) {
                         turnMini();
                 }
-                document.querySelector('main').style.display = 'none';
                 nav.style.display = 'block';
                 iframe.style.display = 'block';
                 iframe.style.width = '98%';
@@ -414,12 +413,12 @@ function turnMini() {
         mainContent.style.display = 'block'; // Show the homepage content
     } else {
         // Revert back to full mode
+        mainContent.style.display = 'none'; // Hide the homepage content
         nav.style.width = '100%'; // Reset to original width
         nav.style.height = 'auto'; // Allow height to adjust automatically
         iframe.style.width = 'calc(100% - 40px)'; // Reset iframe width if necessary
         iframe.style.height = '93.4%'; // Reset iframe height to original
 
-        mainContent.style.display = 'none'; // Hide the homepage content
     }
 }
 
