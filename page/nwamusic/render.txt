@@ -1,0 +1,100 @@
+<html>
+    <title>N.W.A. Moosic</title>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/mistral');
+        body {
+            background-color: black;
+        }
+        .container {
+            position: relative;
+            margin: 50px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid white; /* Add white line */
+            padding-bottom: 20px; /* Add padding for spacing */
+        }
+        .text {
+            font-family: Mistral;
+            font-size: 30px;
+            color: red;
+            text-shadow: 2px 2px #FFF;
+            margin-right: 20px;
+            text-decoration: none; /* Remove underline */
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 0; /* Remove margin */
+            margin-left: 50px;
+        }
+        .image-text {
+            font-family: Mistral;
+            font-size: 30px;
+            color: red;
+            text-shadow: 2px 2px #FFF;
+            margin-top: 10px;
+        }
+        .audio {
+            font-family: Mistral;
+            font-size: 20px;
+            color: red;
+            text-shadow: 2px 2px #FFF;
+            margin-top: 10px;
+            margin-left: 50px;
+            display: block;
+            text-decoration: none; /* Remove underline */
+        }
+    </style>
+    <body>         
+        <h1 style="font-family: Mistral; margin: 50px; font-size: 50px; color: red; text-shadow: 2px 2px #FFF;">N.W.A Moosic</h1>
+        <div class="container">
+            <p class="text">Made by</p>
+            <a href="https://soundcloud.com/lil-2pac-467829763/respect-da-coast" class="text"><p>lil2pac</p></a>
+        </div>
+        <div class="image-container">
+            <img src="https://m.media-amazon.com/images/I/914gSg0S0OL._UF1000,1000_QL80_.jpg" style="width: 150px; height: 150px; margin: 0;">
+            <h3 class="image-text">Straight Outta Compton</h3>
+        </div>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/1.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/2.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <!-- Add more audio elements manually -->
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/3.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/4.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/5.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/6.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/7.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/8.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/9.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio controls class="audio">
+            <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/10.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </body>
+</html>
