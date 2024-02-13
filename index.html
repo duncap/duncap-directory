@@ -210,7 +210,7 @@ function fetchAndDisplayPageContentUsingHash() {
         const iframe = document.getElementById('dynamicIframe');
         iframe.style.width = 'calc(100% - 40px)';
         iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
-        iframe.style.height = '93.4%';
+        iframe.style.height = ' 91.6vh';
     } else {
         hideNav();
     }
@@ -226,7 +226,7 @@ function fetchAndDisplayPageContentUsingHash() {
                 iframe.style.display = 'block';
                 iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
                 iframe.style.width = '98%';
-                iframe.style.height = '93.4%';
+                iframe.style.height = '91.6vh';
 
                 if (htmlContent.trim() === "404: Not Found") {
                     window.location.href = 'https://duncap.dev/404';
@@ -431,7 +431,7 @@ function turnMini() {
         nav.style.height = 'auto'; // Allow height to adjust automatically
         iframe.style.width = 'calc(100% - 40px)'; // Reset iframe width if necessary
         iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
-        iframe.style.height = '93.4%'; // Reset iframe height to original
+        iframe.style.height = ' 91.6vh'; // Reset iframe height to original
         iframe.style.transform = 'scale(1)'; // Reset scaling to 100%
     }
 }
