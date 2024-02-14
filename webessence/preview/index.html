@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Sarabun', sans-serif;
+            background-color: #000000;
+            color: #e0e0e0;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .sidebar, .properties {
+            width: 20%;
+            background-color: #121212;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar {
+    width: 20%;
+    background-color: #121212;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex; /* Add this line */
+    flex-direction: column; /* Add this line */
+}
+
+.draggable-component {
+    display: block; /* Ensure elements are block-level for vertical stacking */
+    margin-bottom: 10px; /* Add 20px space below each component */
+    cursor: pointer; /* Optional: Makes it clear elements are interactive */
+}
+
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            border-left: 1px solid #1c1c1c;
+            border-right: 1px solid #1c1c1c;
+        }
+        .toolbar {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #0a0a0a;
+            border-top: 1px solid #1c1c1c;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input, .toolbar button {
+            padding: 5px;
+            margin-right: 10px;
+            background-color: #121212;
+            color: #e0e0e0;
+            border: 1px solid #1c1c1c;
+        }
+        input {
+            flex: 1;
+        }
+
+        input[type="text"] {
+            /* ... (existing input styles) ... */
+            outline: none; /* Removes default outline */
+        }
+
+        input[type="text"]:focus {
+            border: 1px solid #555; /* Custom styling for focus state */
+            /* Additional styles for focus state if needed */
+        }
+        
+        button {
+            cursor: pointer;
+        }
+        h1, h2 {
+            font-weight: 800; /* Extra bold for larger headings */
+        }
+        h3, h4, h5, h6, p {
+            font-weight: 300; /* Regular/thin for smaller headings and paragraphs */
+        }
+        .button {
+    margin-right: 20px;
+    padding: 5px 10px;
+    color: #e0e0e0;
+    background-color: #121212;
+    border: 1px solid #1c1c1c;
+    text-decoration: none;
+    display: inline-block;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+    color: #121212;
+    background-color: #e0e0e0;
+}
+
+.draggable-in-canvas {
+    display: block; /* Elements appear one below the other */
+}
+
+.component-h1 {
+    font-size: 32px; /* Largest size for main titles */
+    font-weight: 800; /* Extra bold for the most important titles */
+}
+
+.component-h2 {
+    font-size: 28px; /* Slightly smaller than h1 */
+    font-weight: 700; /* Still bold, but less so than h1 */
+}
+
+.component-h3 {
+    font-size: 24px; /* Smaller than h2 */
+    font-weight: 600; /* Bold, but indicating a decrease in hierarchy */
+}
+
+.component-h4 {
+    font-size: 20px; /* Smaller than h3 */
+    font-weight: 500; /* Medium boldness */
+}
+
+.component-h5 {
+    font-size: 18px; /* Smaller than h4 */
+    font-weight: 400; /* Normal weight, indicating it's less important */
+}
+
+.component-p {
+    font-size: 16px; /* Standard text size for paragraphs */
+    font-weight: 300; /* Light, for regular text to differentiate from headings */
+}
+
+.component-button {
+    padding: 5px 10px;
+    color: #e0e0e0;
+    background-color: #121212;
+    border: 1px solid #1c1c1c;
+    text-decoration: none;
+    display: inline-flex; /* Allows internal content alignment */
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    align-self: flex-start; /* Prevents stretching vertically in a column layout */
+    flex-grow: 0; /* Prevents the button from growing */
+    flex-shrink: 0; /* Prevents the button from shrinking */
+    flex-basis: auto; /* Basis is the size of the content */
+}
+
+.component-input {
+    margin-right: 20px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #e0e0e0;
+    background-color: #121212;
+    border: 1px solid #1c1c1c;
+    text-decoration: none;
+    display: inline-block;
+    align-items: center;
+    width: 10vw;
+    height: 2vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+</style>
+</head>
+<body>
+    <p style="margin-left:10px;">THIS IS A PREVIEW. many significant features are cut out of this version to avoid copies.</p>
+    <div class="toolbar">
+        <input type="text" placeholder="enter title...">
+        <button onclick="compileProject()" class="button">compile</button>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <h2>components</h2>
+            <a class="draggable-component component-h1" data-type="h1">title</a>
+            <a class="draggable-component component-h2" data-type="h2">subtitle</a>
+            <a class="draggable-component component-h3" data-type="h3">heading</a>
+            <a class="draggable-component component-h4" data-type="h4">subheading</a>
+            <a class="draggable-component component-h5" data-type="h5">smaller heading</a>
+            <a class="draggable-component component-p" data-type="p">paragraph</a>
+            <a data-type="button"><button class="draggable-component component-button">button</button></a>
+            <a><div class="draggable-component component-input" data-type="input">input</div></a>
+        </div>
+        <div class="main-content" id="canvas">
+            <!-- Canvas for dropping elements -->
+        </div>
+        <div class="properties">
+            <h2>properties</h2>
+            <div id="properties-content">
+                <p>no element selected (womp womp)</p>
+            </div>
+        </div>
+    </div>
+<script>
+    interact('.draggable-component').draggable({
+    listeners: {
+        start(event) {
+            // Clone the element if it's not already in the canvas
+            if (!event.target.classList.contains('draggable-in-canvas')) {
+                let target = document.createElement('a');
+                target.className = event.target.className;
+                target.textContent = event.target.textContent;
+                target.classList.add('draggable-in-canvas');
+                document.getElementById('canvas').appendChild(target);
+
+                // Add a double-click listener to remove the cloned element
+                target.ondblclick = function() {
+                    // Check if the current element is the one selected
+                    if (document.getElementById('properties-content').currentElement === this) {
+                        // Reset the properties content to default message
+                        document.getElementById('properties-content').innerHTML = '<p>no element selected (womp womp)</p>';
+                    }
+                    this.remove(); // Remove the element on double-click
+                };
+            }
+        },
+        move(event) {
+            // Move the original element
+            const target = event.target;
+            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+            target.style.transform = `translate(${x}px, ${y}px)`;
+        },
+        end(event) {
+            // Reset the original element's position
+            event.target.style.transform = 'none';
+            event.target.setAttribute('data-x', 0);
+            event.target.setAttribute('data-y', 0);
+        }
+    }
+});
+
+function selectElement(element) {
+    // Determine element specifics
+    const isAnchor = element.tagName.toLowerCase() === 'a';
+    const hrefValue = isAnchor && element.getAttribute('href') ? element.getAttribute('href') : '';
+    const dataType = element.getAttribute('data-type');
+    const className = dataType ? `.component-${dataType}` : '';
+
+    // Initialize or find the <style> tag for dynamic styles
+    let styleTag = document.getElementById('dynamic-css');
+    if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = 'dynamic-css';
+        document.head.appendChild(styleTag);
+    }
+
+    // Extract existing CSS rules for the className
+    const existingCssRule = Array.from(styleTag.sheet.cssRules)
+        .find(rule => rule.selectorText === className)?.cssText.split("{")[1]?.split("}")[0]?.trim() || '';
+
+    // Update properties panel
+    document.getElementById('properties-content').innerHTML = `
+        <div style="display: block;"><label for="element-text">text:</label>
+        <input type="text" id="element-text" value="${element.textContent}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
+        ${isAnchor ? `<div style="display: block;"><label for="element-href">link:</label><input type="text" id="element-href" value="${hrefValue}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>` : ''}
+        <div style="display: block; margin-top: 10px;">
+    `;
+
+    document.getElementById('properties-content').currentElement = element;
+
+    // Event listeners for live updates
+    document.getElementById('element-text').addEventListener('input', function() {
+        element.textContent = this.value;
+    });
+
+    if (isAnchor) {
+        document.getElementById('element-href').addEventListener('input', function() {
+            element.setAttribute('href', this.value);
+        });
+    }
+
+    document.getElementById('element-css').addEventListener('input', function() {
+        const cssText = this.value;
+        const fullCssRule = `${className} { ${cssText} }`;
+
+        // Check for existing rule and update or insert new rule
+        const index = Array.from(styleTag.sheet.cssRules).findIndex(rule => rule.selectorText === className);
+        if (index !== -1) {
+            styleTag.sheet.deleteRule(index);
+        }
+        styleTag.sheet.insertRule(fullCssRule, styleTag.sheet.cssRules.length);
+    });
+}
+
+document.getElementById('canvas').addEventListener('click', function(event) {
+    let target = event.target;
+    while (target != null && target.tagName !== 'A' && target !== this) {
+        target = target.parentNode;
+    }
+    if (target && target.tagName === 'A') {
+        event.preventDefault(); 
+    }
+    if (event.target.classList.contains('draggable-in-canvas')) {
+        selectElement(event.target);
+    } else {
+        // Reset the properties content to default message when no element is selected
+        document.getElementById('properties-content').innerHTML = '<p>no element selected (womp womp)</p>';
+    }
+});
+
+
+    function compileProject() {
+    // Retrieve the project title from an input field
+    const titleInput = document.querySelector('.toolbar input[type="text"]');
+    const projectTitle = titleInput.value.trim() || 'index';
+
+    // Retrieve the dynamic CSS styles
+    const styleTag = document.getElementById('dynamic-css');
+    const cssStyles = styleTag ? `<style>${styleTag.innerHTML}</style>` : '';
+
+    // Retrieve the HTML content from the canvas
+    let canvasContent = document.getElementById('canvas').innerHTML;
+
+    // Parse the canvas content to a DOM element
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(`<div>${canvasContent}</div>`, 'text/html');
+
+    // Convert custom elements like <a data-type="button"> into actual <button> elements
+    doc.querySelectorAll('[data-type="button"]').forEach(el => {
+        const button = document.createElement('button');
+        button.innerHTML = el.innerHTML;
+        button.className = el.className; // Copy classes if needed
+        // Copy other attributes if needed
+        el.parentNode.replaceChild(button, el);
+    });
+
+    // Serialize the modified content back to a string
+    canvasContent = doc.body.firstChild.innerHTML;
+
+    // Compile the full HTML content
+    const fullHtmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${projectTitle}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;800&display=swap" rel="stylesheet">
+    <style>
+    body, html {
+        margin: 25px;
+        padding: 0;
+        height: 100%;
+        font-family: 'Sarabun', sans-serif;
+        background-color: #000000;
+        color: #e0e0e0;
+    }
+        
+    .button {
+        margin-right: 20px;
+        padding: 5px 10px;
+        color: #e0e0e0;
+        background-color: #121212;
+        border: 1px solid #1c1c1c;
+        text-decoration: none;
+        display: inline-block;
+        align-items: center;
+        transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+    color: #121212;
+    background-color: #e0e0e0;
+}
+
+.draggable-in-canvas {
+    display: block; /* Elements appear one below the other */
+}
+
+.component-h1 {
+    font-size: 32px; /* Largest size for main titles */
+    font-weight: 800; /* Extra bold for the most important titles */
+    margin-bottom: 15px;
+}
+
+.component-h2 {
+    font-size: 28px; /* Slightly smaller than h1 */
+    font-weight: 700; /* Still bold, but less so than h1 */
+    margin-bottom: 15px;
+}
+
+.component-h3 {
+    font-size: 24px; /* Smaller than h2 */
+    font-weight: 600; /* Bold, but indicating a decrease in hierarchy */
+    margin-bottom: 10px;
+}
+
+.component-h4 {
+    font-size: 20px; /* Smaller than h3 */
+    font-weight: 500; /* Medium boldness */
+    margin-bottom: 15px;
+}
+
+.component-h5 {
+    font-size: 18px; /* Smaller than h4 */
+    font-weight: 400; /* Normal weight, indicating it's less important */
+    margin-bottom: 15px;
+}
+
+.component-p {
+    font-size: 16px; /* Standard text size for paragraphs */
+    font-weight: 300; /* Light, for regular text to differentiate from headings */
+    margin-bottom: 15px;
+}
+
+.component-button {
+    padding: 5px 10px;
+    color: #e0e0e0;
+    background-color: #121212;
+    border: 1px solid #1c1c1c;
+    text-decoration: none;
+    display: inline-flex; /* Allows internal content alignment */
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    align-self: flex-start; /* Prevents stretching vertically in a column layout */
+    flex-grow: 0; /* Prevents the button from growing */
+    flex-shrink: 0; /* Prevents the button from shrinking */
+    flex-basis: auto; /* Basis is the size of the content */
+    margin-bottom: 15px;
+}
+
+.component-input {
+    margin-right: 20px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #e0e0e0;
+    background-color: #121212;
+    border: 1px solid #1c1c1c;
+    text-decoration: none;
+    display: inline-block;
+    align-items: center;
+    width: 10vw;
+    height: 2vh;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 15px;
+}
+    </style>
+</head>
+<body>
+    ${canvasContent}
+</body>
+</html>
+`;
+
+    // Create a Blob from the HTML content
+    const blob = new Blob([fullHtmlContent], { type: 'text/html' });
+
+    // Generate a URL for the Blob
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link element and trigger the download
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = `${projectTitle.replace(/[^a-z0-9]/gi, '_')}.html`; // Sanitize title for filename
+    document.body.appendChild(downloadLink); // Append to the document
+    downloadLink.click(); // Programmatically click the link to trigger the download
+    document.body.removeChild(downloadLink); // Remove the link element
+}
+
+    function importProject() {
+        // Import logic
+    }
+
+    function publishProject() {
+        // Publishing logic
+    }
+</script>
+</body>
+</html>
