@@ -16,7 +16,7 @@
     <meta property="twitter:url" content="https://duncap.dev/">
     <meta property="twitter:title" content="duncap directory">
     <meta property="twitter:description" content="discover pages made by people on the internet.">
-    <meta property="twitter:image" content="https://duncap.dev/thumb.png"> 
+    <meta property="twitter:image" content="https://duncap.dev/thumb.png">
     <title>duncap directory</title>
     <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/duncap/duncap.github.io/main/icon.ico"/>
 <style>
@@ -53,7 +53,7 @@ inner {
     transform: translateX(-150%);
 }
 #dynamicNav.visible {
-    transform: translateX(0%); 
+    transform: translateX(0%);
 }
 
 
@@ -74,7 +74,7 @@ button {
 }
 
 select {
-    border-width: 2px; 
+    border-width: 2px;
     border-style: outset;
     border-color: buttonface;
     border-right-color: #424242;
@@ -100,7 +100,7 @@ nav {
 
 #dynamicIframe {
         background-color: #fff;
-        display: block; 
+        display: block;
         width: calc(100% - 40px);
         height: 93.4%;
         margin: 10px auto;
@@ -219,7 +219,7 @@ function fetchAndDisplayPageContentUsingHash() {
     } else {
         hideNav();
     }
-    
+   
     if (pageName) {
         fetch(contentUrl)
             .then(response => response.text())
@@ -336,46 +336,13 @@ function hideNav() {
 }
 
 window.onload = async () => {
-    hideNav(); 
+    hideNav();
     await fetchAndUpdateFiles();
     fetchAndDisplayPageContentUsingHash();
     setInterval(fetchAndUpdateFiles, 3000);
 };
 
-function toggleFullscreen() {
-    const iframe = document.getElementById('dynamicIframe');
-    const nav = document.getElementById('dynamicNav');
-    if (!document.fullscreenElement) {
-        if (nav.requestFullscreen) {
-            nav.requestFullscreen();
-        } else if (nav.mozRequestFullScreen) {
-            nav.mozRequestFullScreen();
-        } else if (nav.webkitRequestFullscreen) { 
-            nav.webkitRequestFullscreen();
-        } else if (nav.msRequestFullscreen) {
-            nav.msRequestFullscreen();
-        }
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        nav.style.border = 'none'; 
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-        // Revert to the original styles
-        iframe.style.width = 'calc(100% - 40px)';
-        iframe.style.height = '93.4%';
-        nav.style.border = 'solid';
-    }
-}
-
-document.getElementById('toggleFullscreen').addEventListener('click', toggleFullscreen);
+// Add this inside your <script> tag
 
 // Adjust fullscreen change handling for different browsers
 document.addEventListener('fullscreenchange', exitHandler);
@@ -390,9 +357,39 @@ function exitHandler() {
         const nav = document.getElementById('dynamicNav');
         // Revert styles to their original state
         iframe.style.width = 'calc(100% - 40px)';
-        iframe.style.height = '93.4%';
-        iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
-        nav.style.border = 'solid';
+        iframe.style.height = '91.6vh';
+        document.body.style.margin = '10px'; // Assuming you want to revert back to the original margin
+        // Show window controls and any other UI elements you hid
+        document.getElementById('windowControls').style.display = 'flex';
+        nav.style.backgroundColor = ''; // Revert nav background color if changed
+    }
+}
+
+function toggleFullscreen() {
+    const iframe = document.getElementById('dynamicIframe');
+    const nav = document.getElementById('dynamicNav');
+    if (!document.fullscreenElement) {
+        if (nav.requestFullscreen) {
+            nav.requestFullscreen();
+        } else if (nav.mozRequestFullScreen) { /* Firefox */
+            nav.mozRequestFullScreen();
+        } else if (nav.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            nav.webkitRequestFullscreen();
+        } else if (nav.msRequestFullscreen) { /* IE/Edge */
+            nav.msRequestFullscreen();
+        }
+        // Hide UI elements as before
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
+        }
+        // No need to manually restore UI elements here, exitHandler will take care
     }
 }
 
@@ -460,10 +457,10 @@ function filterPages() {
     const input = document.getElementById('searchInput');
     const filter = input.value.toUpperCase();
     const buttonsContainer = document.getElementById('buttonsContainer');
-    
+   
     // Clear current buttons
     buttonsContainer.innerHTML = '';
-    
+   
     // Filter files and display buttons for matching files
     const filteredFiles = files.filter(file => file.display.toUpperCase().includes(filter));
     buttonsContainer.innerHTML = filteredFiles.map(file =>
@@ -493,6 +490,7 @@ function fetchFileContent(path) {
     <nav id="windowControls" style="background-color: #919191; display: flex; align-items: center;justify-content: flex-start;">
         <button onclick="redirectToHomepage()" style="width: 25px; height: 25px; margin: 0; margin-left: 15px; padding: 0;">x</button>
         <button onclick="turnMini()" style="width: 25px; height: 25px; margin: 0; margin-left: 5px; padding: 0;">-</button>
+        <button onclick="toggleFullscreen()" style="width: 25px; height: 25px; margin: 0; margin-left: 5px; padding: 0;"><svg width="15" height="15" viewBox="0 0 55 55" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="40" height="35" fill="none" stroke="black" stroke-width="3"/><rect x="5" y="8" width="40" height="10"  fill="black"/></svg></button>
     </nav>
     <nav style="background-color: silver;">
         <iframe id="dynamicIframe"></iframe>
