@@ -55,44 +55,44 @@
             <img src="https://m.media-amazon.com/images/I/914gSg0S0OL._UF1000,1000_QL80_.jpg" style="width: 150px; height: 150px; margin: 0;">
             <h3 class="image-text">Straight Outta Compton</h3>
         </div>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/1.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/2.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
         <!-- Add more audio elements manually -->
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/3.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/4.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/5.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/6.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/7.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/8.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/9.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        <audio controls class="audio">
+        <audio loop controls class="audio">
             <source src="https://github.com/duncap/duncap-directory/raw/main/page/nwamusic/10.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
