@@ -279,6 +279,7 @@ async function fetchAndUpdateFiles() {
 
     files = await Promise.all(fileDataPromises);
     sortAndDisplayButtons();
+    filterPages();
 }
 
 function parseMetadata(metadataContent) {
@@ -450,6 +451,21 @@ function forceLoadPageContent(pageId) {
     }
 }
 
+function filterPages() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toUpperCase();
+    const buttonsContainer = document.getElementById('buttonsContainer');
+    
+    // Clear current buttons
+    buttonsContainer.innerHTML = '';
+    
+    // Filter files and display buttons for matching files
+    const filteredFiles = files.filter(file => file.display.toUpperCase().includes(filter));
+    buttonsContainer.innerHTML = filteredFiles.map(file =>
+        `<button onclick="forceLoadPageContent('${file.id}');">${file.display}</button>`
+    ).join('');
+}
+
 function fetchFileContent(path) {
     return fetch(`https://raw.githubusercontent.com/duncap/duncap.github.io/main/${path}`).then(response => response.text());
 }
@@ -465,6 +481,7 @@ function fetchFileContent(path) {
             <option value="newest">newest</option>
             <option value="oldest">oldest</option>
         </select>
+        <input type="text" id="searchInput" placeholder="search pages..." onkeyup="filterPages()" style="margin: 20px; padding: 4px; border-width: 2px; border-style: outset; border-color: buttonface; border-right-color: #424242; border-bottom-color: #424242; background: silver; font-family: win95; color: black; padding: 4px; border-radius: 1px;">
         <div id="buttonsContainer"></div>
     </main>
     <div id="dynamicNav">
