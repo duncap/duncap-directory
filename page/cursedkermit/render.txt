@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html style="background-color: black; margin: 10px;">
-	<audio autoplay src="https://www.myinstants.com/media/sounds/didnt-i-do-it-for-you_WJbyVtC.mp3"></audio>
+	<audio loop autoplay src="https://www.myinstants.com/media/sounds/didnt-i-do-it-for-you_WJbyVtC.mp3"></audio>
 	<h1 style="font-family: arial; color: white;">i love cursed kermit images</h1>
 	<p style="font-family: arial; color: white;">last updated 2/23/24</p>
 	<p style="font-family: arial; color: white;">maintained by <a href="https://www.youtube.com/@gohstx">NOTTI BOIII</a></p>
