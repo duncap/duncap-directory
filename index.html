@@ -412,6 +412,27 @@ function redirectToHomepage() {
 }
 
 function turnMini() {
+    // First, check if the document is in fullscreen mode
+    if (document.fullscreenElement) {
+        // Exit fullscreen mode
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) { // Firefox
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) { // IE/Edge
+            document.msExitFullscreen();
+        }
+        // Wait for fullscreen exit to complete before proceeding (optional, may be needed for certain browsers)
+        setTimeout(minimize, 100); // 100ms delay for demonstration, adjust as needed
+    } else {
+        // If not in fullscreen mode, proceed with minimizing directly
+        minimize();
+    }
+}
+
+function minimize() {
     const nav = document.getElementById('dynamicNav');
     const iframe = document.getElementById('dynamicIframe');
     const mainContent = document.querySelector('main'); // Select the main content
@@ -433,11 +454,11 @@ function turnMini() {
         nav.style.width = '100%'; // Reset to original width
         nav.style.height = 'auto'; // Allow height to adjust automatically
         iframe.style.width = 'calc(100% - 40px)'; // Reset iframe width if necessary
-        iframe.style.transform = 'scale(1.0)'; // Scale down to 50%
-        iframe.style.height = ' 91.6vh'; // Reset iframe height to original
-        iframe.style.transform = 'scale(1)'; // Reset scaling to 100%
+        iframe.style.height = '91.6vh'; // Reset iframe height to original
+        iframe.style.transform = 'scale(1.0)'; // Reset scaling to 100%
     }
 }
+
 
 function forceLoadPageContent(pageId) {
     // Check if the current hash matches the clicked page ID
