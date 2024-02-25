@@ -4,11 +4,11 @@
 	<h1 style="font-family: arial; color: white;">i love cursed kermit images</h1>
 	<p style="font-family: arial; color: white;">last updated 2/23/24</p>
 	<p style="font-family: arial; color: white;">maintained by <a href="https://www.youtube.com/@gohstx">NOTTI BOIII</a></p>
-	<img style="width: 30vw;" src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fpm1.narvii.com%2F7428%2Fe9de076ba40e921bdf06f0c0cd7317fa200167f3r1-225-225v2_hq.jpg&sp=1708712992Tedb253731ca027416fcf1b55043b5802c7b0535e991d4d1b49a41218809dac98">
-	<img style="width: 30vw;" src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F7c%2F61%2Ff5%2F7c61f57814d99c5cdae94796c9988656.jpg&sp=1708712992T7c55b68c0fb6c40d0208c42bf0a5f01072653e48d2e9f5d0341dedf40c682c62">
-	<img style="width: 30vw;" src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fd6%2Ffe%2Fa1%2Fd6fea1325873a8686e2b73ed16367e80.jpg&sp=1708712992T4fb7f895648561486daf750e53d74816d83f7ea62bf62a219e59da8e6a81c989">
-	<img style="width: 30vw;" src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fyt3.googleusercontent.com%2Fytc%2FAGIKgqOtxgg2WeU24DZ_6aTOxZujphp6X0QNEpgcTcmMfA%3Ds900-c-k-c0x00ffffff-no-rj&sp=1708712992T429deaf86398ae4422f1f10952215290f66825d4be67612908cfa0d8139020ff">
-	<img style="width: 30vw;" src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fbb%2F9b%2Fb6%2Fbb9bb6c970c16c6fec9055246f8fd675.jpg&sp=1708712992T62a1aa41c27890bfd6f97941b1121ee9bba62a8e3f4f6e5103d662cbd47c210f">
-	<img style="width: 30vw;" src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fi.pinimg.com%2F736x%2Ffe%2F1c%2Fb8%2Ffe1cb8bf3b088bea9a3d34a92c78c89b.jpg&sp=1708712992T61734cd4a6a8c22edeab398ca4bffdd00bcfeabac5c565eefa26db10ac8e0aad">
-	<img style="width: 30vw;" src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.mdcXKwMm9MFa8aAKzBbDXgHaEK%26pid%3DApi&sp=1708713099Te9bb6a16911dd10ff3a89b9cdaedd0ae50a84476d24fca3726b3f214763578bc">
+	<img style="width: 30vw;" src="https://pm1.aminoapps.com/7428/e9de076ba40e921bdf06f0c0cd7317fa200167f3r1-225-225v2_hq.jpg">
+	<img style="width: 30vw;" src="https://i.pinimg.com/564x/3c/f5/0f/3cf50f449428101716b2196af58c0533.jpg">
+	<img style="width: 30vw;" src="https://img.ifunny.co/images/ced78839d01887fa38079547bddfe3bef8da07fc326de5a755cfc3c656ddcf78_1.webp">
+	<img style="width: 30vw;" src="https://i.pinimg.com/564x/15/6f/7f/156f7fd0b00f38a99c194ea52fed0d75.jpg">
+	<img style="width: 30vw;" src="https://64.media.tumblr.com/edf3390814648e2946e778324db69034/tumblr_plebclK6wU1r53ppf_540.jpg">
+	<img style="width: 30vw;" src="https://i.pinimg.com/564x/1e/f2/09/1ef2090b82602e1361a644edd05f073a.jpg">
+	<img style="width: 30vw;" src="https://i.pinimg.com/564x/7c/61/f5/7c61f57814d99c5cdae94796c9988656.jpg">
 </html>
