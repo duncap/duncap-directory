@@ -1,0 +1,19 @@
+<html style="margin: 20px; font-family: comic sans ms;">
+<style>
+    @keyframes fadeInUp {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadeInUp-animation {
+  animation: 1.5s fadeInUp;
+}
+</style>
+<title>PATRICK DIED OF LIGMA</title>
+<div class="fadeInUp-animation" style="display: flex;
+	justify-content: center; margin-top: 40vh"><p>PATRICK DIED OF LIGMA </p><img style="margin-top: 15px; margin-left: 10px; width: 30px; height: 30px;" src="https://i.pinimg.com/736x/46/1c/35/461c35f6f24c0a944c5d8ab5074bb932.jpg"></div>
+</html>
