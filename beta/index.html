@@ -286,7 +286,7 @@
                 false,
             );
             window.onload = fetchAndDisplayPageContentUsingHash;
-
+            
             async function fetchCommitData(file) {
                 const commitsResponse = await fetch(
                     `https://api.github.com/repos/duncap/duncap.github.io/commits?path=${file.path}`,
@@ -319,20 +319,17 @@
                     .map((dir) => ({ path: dir.path }));
             }
 
-            async function fetchAndUpdateFiles() {
-                try {
-                    // Adjust this URL to your actual endpoint that lists all pages with their details
-                    const response = await fetch(
-                        "https://fg0kpyarpe.loclx.io/list-all",
-                    );
-                    if (!response.ok)
-                        throw new Error("Network response was not ok");
-                    files = await response.json();
-                    sortAndDisplayButtons();
-                } catch (error) {
-                    console.error("Failed to fetch files:", error);
-                }
-            }
+           async function fetchAndUpdateFiles() {
+    try {
+        // Fetches data from the /list-all endpoint of your server
+        const response = await fetch('https://fg0kpyarpe.loclx.io/list-all');
+        if (!response.ok) throw new Error('Network response was not ok');
+        files = await response.json();
+        sortAndDisplayButtons();
+    } catch (error) {
+        console.error('Failed to fetch files:', error);
+    }
+}
 
             function parseMetadata(metadataContent) {
                 let id = "",
@@ -532,15 +529,13 @@
             }
 
             function loadPageContent(directory) {
-                // Assuming 'directory' uniquely identifies the page. Adjust as necessary.
-                const pageData = files.find(
-                    (file) => file.directory === directory,
-                );
-                if (!pageData) return;
+                // Find the file data based on the directory
+                const file = files.find(f => f.directory === directory);
+                if (!file) return;
 
-                // Update iframe source and potentially other UI elements to show the page
-                const iframe = document.getElementById("dynamicIframe");
-                iframe.srcdoc = pageData.render; // Directly setting the iframe content
+                // Assuming you have an iframe or similar to display the page content
+                const iframe = document.getElementById('dynamicIframe');
+                iframe.srcdoc = file.render; // Directly setting the iframe content to render.txt content
                 showNav(); // Ensure navigation is shown
             }
 
