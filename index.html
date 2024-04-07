@@ -112,7 +112,7 @@ nav {
     bottom: 20px; /* Distance from bottom */
     right: 20px; /* Distance from right */
     z-index: 1000; /* Ensure it's above other content */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Optional: Add shadow for better visibility */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 nav .top {
@@ -339,10 +339,8 @@ window.onload = async () => {
     hideNav();
     await fetchAndUpdateFiles();
     fetchAndDisplayPageContentUsingHash();
-    setInterval(fetchAndUpdateFiles, 3000);
+    setInterval(fetchAndUpdateFiles, 60000);
 };
-
-// Add this inside your <script> tag
 
 // Adjust fullscreen change handling for different browsers
 document.addEventListener('fullscreenchange', exitHandler);
@@ -358,7 +356,7 @@ function exitHandler() {
         // Revert styles to their original state
         iframe.style.width = 'calc(100% - 40px)';
         iframe.style.height = '91.6vh';
-        document.body.style.margin = '10px'; // Assuming you want to revert back to the original margin
+        document.body.style.margin = '10px';
         // Show window controls and any other UI elements you hid
         document.getElementById('windowControls').style.display = 'flex';
         nav.style.backgroundColor = ''; // Revert nav background color if changed
