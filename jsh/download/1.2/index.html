@@ -3,32 +3,29 @@
     <head>
         <title>Downloading JSH 1.2</title>
         <script>
-            // This function will detect the OS and return the appropriate download URL
             function getDownloadUrl() {
-                // navigator.platform is deprecated, so using navigator.userAgentData if available
                 const platform = navigator.userAgentData ?
                     navigator.userAgentData.platform : navigator.platform;
 
-                // Determine the download link based on the OS
                 if (/Mac/i.test(platform)) {
                     return 'https://duncap.dev/jsh/download/1.2/macos/jshxmacos.zip';
                 } else if (/Win/i.test(platform)) {
                     return 'https://duncap.dev/jsh/download/1.2/windows/jshxwindows.zip';
                 } else {
-                    // Default or unknown platform, return null or a specific URL for handling
                     return null;
                 }
             }
 
-            // This function will trigger the download and redirect
             function downloadAndRedirect() {
                 const downloadUrl = getDownloadUrl();
 
                 if (downloadUrl) {
-                    // Redirect to the download URL
-                    window.location.href = downloadUrl;
+                    // Open the download URL in a new tab
+                    window.open(downloadUrl, '_blank');
+                    
+                    // Redirect the current page to the homepage after starting the download
+                    window.location.href = "https://duncap.dev/jsh";
                 } else {
-                    // Handle the case where no appropriate download is available
                     alert("Your OS is not supported for direct download.");
                     window.location.href = "https://duncap.dev/jsh";
                 }
